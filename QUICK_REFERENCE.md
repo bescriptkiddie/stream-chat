@@ -1,0 +1,450 @@
+# ⚡ 快速参考手册
+
+> 面试前 1 小时快速过一遍
+
+## 🔥 核心功能速查（必背）
+
+### 1. SSE 流式对话
+```
+为什么选 SSE？
+→ 单向推送、自动重连、基于 HTTP、简单
+
+如何处理跨 chunk？
+→ Buffer 缓冲，按行分割，保留最后一行
+
+代码：
+let buffer = '';
+buffer += chunk;
+const lines = buffer.split('\n');
+buffer = lines.pop();
+```
+
+### 2. Promise 原理
+```
+三种状态：
+→ pending → fulfilled/rejected（不可逆）
+
+如何实现链式调用？
+→ then 返回新 Promise
+
+关键代码：
+then(onFulfilled) {
+  return new Promise((resolve) => {
+    const x = onFulfilled(this.value);
+    resolve(x);
+  });
+}
+```
+
+### 3. this 指向
+```
+四种绑定规则（优先级从高到低）：
+1. new 绑定 → 新对象
+2. 显式绑定（call/apply/bind）→ 指定对象
+3. 隐式绑定（obj.fn()）→ 调用对象
+4. 默认绑定 → window/undefined
+
+手写 call：
+Function.prototype.myCall = function(ctx, ...args) {
+  ctx = ctx || window;
+  const fn = Symbol();
+  ctx[fn] = this;
+  const result = ctx[fn](...args);
+  delete ctx[fn];
+  return result;
+}
+```
+
+### 4. 事件循环
+```
+执行顺序：
+1. 同步代码（Call Stack）
+2. 所有微任务（Promise.then）
+3. 一个宏任务（setTimeout）
+4. 重复 2-3
+
+记忆：同 → 微 → 宏 → 微 → 宏...
+
+经典题：
+console.log('1');
+Promise.resolve().then(() => console.log('2'));
+setTimeout(() => console.log('3'), 0);
+console.log('4');
+
+输出：1 4 2 3
+```
+
+### 5. 深拷贝
+```
+为什么不用 JSON？
+→ 丢失 undefined/函数/Date，循环引用报错
+
+如何处理循环引用？
+→ WeakMap 存储已拷贝对象
+
+代码：
+function deepClone(obj, hash = new WeakMap()) {
+  if (hash.has(obj)) return hash.get(obj);
+  const clone = Array.isArray(obj) ? [] : {};
+  hash.set(obj, clone);
+  for (let key in obj) {
+    clone[key] = deepClone(obj[key], hash);
+  }
+  return clone;
+}
+```
+
+### 6. 虚拟列表
+```
+核心思想：
+→ 只渲染可视区域
+
+关键计算：
+startIndex = Math.floor(scrollTop / itemHeight)
+endIndex = startIndex + Math.ceil(viewHeight / itemHeight)
+offsetY = startIndex * itemHeight
+
+性能对比：
+10,000 DOM → 20 DOM
+500MB → 50MB
+```
+
+### 7. TypeScript 泛型
+```
+作用：类型参数化
+
+封装 API：
+async function request<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.data; // 类型安全
+}
+
+手写 Partial：
+type MyPartial<T> = {
+  [P in keyof T]?: T[P];
+}
+```
+
+### 8. Error Boundary
+```
+能捕获：
+✅ 渲染错误
+✅ 生命周期错误
+✅ 构造函数错误
+
+不能捕获：
+❌ 事件处理器
+❌ 异步代码
+❌ SSR
+
+代码：
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  
+  componentDidCatch(error, info) {
+    logError(error, info);
+  }
+  
+  render() {
+    if (this.state.hasError) return <ErrorUI />;
+    return this.props.children;
+  }
+}
+```
+
+---
+
+## 💬 高频问题快速应答
+
+### Q1: SSE vs WebSocket？
+```
+SSE: 单向推送、HTTP、自动重连
+WebSocket: 双向通信、独立协议、需手动重连
+
+何时用 SSE：AI 对话、通知、日志
+何时用 WS：游戏、协同编辑、视频流
+```
+
+### Q2: 闭包的优缺点？
+```
+✅ 数据私有化、避免全局污染
+❌ 内存占用（变量不会释放）
+
+如何避免泄漏：
+- 及时解除引用（= null）
+- 避免引用大对象
+- 使用 WeakMap
+```
+
+### Q3: 宏任务 vs 微任务？
+```
+宏任务：setTimeout、setInterval、I/O
+微任务：Promise.then、async/await、MutationObserver
+
+区别：每个宏任务后，清空所有微任务
+```
+
+### Q4: IndexedDB vs LocalStorage？
+```
+LocalStorage: 5MB、同步、字符串
+IndexedDB: 无限制、异步、对象、支持索引
+
+何时用 IndexedDB：大量数据、复杂查询
+```
+
+### Q5: React 性能优化？
+```
+1. 虚拟列表（大列表）
+2. React.memo（避免重渲染）
+3. useCallback/useMemo（缓存函数/值）
+4. Suspense + lazy（代码分割）
+5. 事件节流/防抖
+```
+
+### Q6: TypeScript 工具类型？
+```
+Partial<T>    → 所有属性可选
+Required<T>   → 所有属性必填
+Pick<T, K>    → 挑选属性
+Omit<T, K>    → 排除属性
+ReturnType<T> → 函数返回值类型
+```
+
+### Q7: Promise.all vs Promise.race？
+```
+Promise.all([p1, p2, p3])
+→ 全部成功才成功，一个失败就失败
+→ 用于：并发请求，都需要结果
+
+Promise.race([p1, p2, p3])
+→ 第一个完成的结果（成功或失败）
+→ 用于：超时控制、快速响应
+```
+
+### Q8: 如何处理循环引用？
+```
+用 WeakMap 存储已拷贝对象：
+
+function clone(obj, map = new WeakMap()) {
+  if (map.has(obj)) return map.get(obj);
+  const copy = {};
+  map.set(obj, copy);
+  // ... 递归拷贝
+  return copy;
+}
+
+为什么用 WeakMap？
+→ 弱引用，不影响 GC
+```
+
+### Q9: 手写 call/apply/bind？
+```
+call:
+Function.prototype.myCall = function(ctx, ...args) {
+  ctx[Symbol()] = this;
+  const result = ctx[Symbol()](...args);
+  return result;
+}
+
+apply:
+→ 同 call，参数用数组
+
+bind:
+Function.prototype.myBind = function(ctx, ...args1) {
+  const fn = this;
+  return function(...args2) {
+    return fn.apply(ctx, [...args1, ...args2]);
+  };
+}
+```
+
+### Q10: 虚拟列表动态高度？
+```
+用 Map 存储每项实际高度：
+
+const [heights, setHeights] = useState(new Map());
+
+useEffect(() => {
+  refs.forEach((ref, i) => {
+    const h = ref.getBoundingClientRect().height;
+    setHeights(prev => new Map(prev).set(i, h));
+  });
+});
+
+计算 offset：
+const offsetY = Array.from(heights.values())
+  .slice(0, startIndex)
+  .reduce((sum, h) => sum + h, 0);
+```
+
+---
+
+## 🎯 阶跃星辰专属问答
+
+### Q: 如何应用到 Step 产品？
+
+**SSE 流式对话**
+```
+场景：Step Chat 实时打字效果
+价值：提升用户体验、减少等待焦虑
+实现：ReadableStream + Buffer 处理
+```
+
+**Token 计数器**
+```
+场景：实时显示 API 调用成本
+价值：用户控制花费、透明化计费
+实现：tiktoken.js 精确计算
+```
+
+**LaTeX 渲染**
+```
+场景：展示 Step 模型数学推理能力
+价值：支持数学公式、科研场景
+实现：KaTeX + remarkMath
+```
+
+**Function Calling**
+```
+场景：企业客户定义内部函数
+价值：查询订单/库存、扩展 AI 能力
+实现：函数定义 + 参数解析
+```
+
+**多会话管理**
+```
+场景：保存历史对话记录
+价值：离线访问、数据持久化
+实现：IndexedDB 事务 + CRUD
+```
+
+---
+
+## 📝 面试话术模板
+
+### 开场白
+```
+我准备了一个完整的 AI 前端 Demo 项目，
+专门针对阶跃星辰的产品场景设计。
+
+包含 25+ 个功能，覆盖：
+- AI 集成（SSE、多会话、Token 计数）
+- JS 基础（Promise、闭包、事件循环）
+- TypeScript（泛型、类型体操）
+- React 高级（Error Boundary、Suspense）
+
+我可以选几个核心功能演示一下吗？
+```
+
+### 功能介绍（SSE）
+```
+这是 AI 产品的核心体验。
+我选择 SSE 而不是 WebSocket，因为：
+
+1. 单向推送就够了
+2. 自动重连机制
+3. 基于 HTTP，简单
+
+实现难点：
+- Buffer 处理（跨 chunk 边界）
+- 增量渲染（只追加新内容）
+- 思考过程展示（区分 thinking/content）
+
+在阶跃星辰产品中，可以应用到...
+```
+
+### 应对追问
+```
+面试官：网络中断怎么办？
+
+回答：三层处理：
+1. SSE 自动重连（浏览器原生）
+2. 前端重试机制（指数退避）
+3. 用户提示（连接中...）
+
+代码在这里...（展示实现）
+```
+
+### 结束语
+```
+通过这个项目，我深入理解了：
+- AI 产品的核心体验
+- 前端工程化思维
+- 性能优化策略
+
+我很期待能将这些经验应用到阶跃星辰的产品中，
+和团队一起打造更好的 AI 产品体验。
+```
+
+---
+
+## ⏰ 面试前 1 小时 Checklist
+
+### 技术准备
+- [ ] 过一遍 8 个核心功能
+- [ ] 背诵 10 个高频问题回答
+- [ ] 准备 3-5 个演示功能
+- [ ] 测试项目能否正常运行
+
+### 心理准备
+- [ ] 深呼吸，放松心态
+- [ ] 回顾项目亮点
+- [ ] 准备自我介绍
+- [ ] 想好要问面试官的问题
+
+### 设备检查
+- [ ] 网络连接稳定
+- [ ] 摄像头/麦克风正常
+- [ ] VSCode 打开项目
+- [ ] 浏览器打开 Demo
+
+### 物品准备
+- [ ] 纸笔（画图用）
+- [ ] 水杯（润喉）
+- [ ] 简历打印版
+- [ ] 笔记本（记录问题）
+
+---
+
+## 🚀 最后的建议
+
+### 回答策略
+1. **先说结论**：不要啰嗦，直接回答
+2. **结构化表达**：总分总，分点说明
+3. **结合项目**：每个回答都联系实际
+4. **深度适中**：不要太浅，也不要太深
+
+### 常见失误
+1. ❌ 回答太长，抓不住重点
+2. ❌ 死记硬背，缺乏理解
+3. ❌ 不懂装懂，瞎编乱造
+4. ❌ 只说概念，没有代码
+
+### 加分技巧
+1. ✅ 主动画图，可视化讲解
+2. ✅ 展示代码，边写边讲
+3. ✅ 对比方案，说明选择理由
+4. ✅ 关联知识，展示深度
+
+### 心态调整
+```
+你已经准备了 25+ 个功能
+你比 80% 的候选人更充分
+相信自己，展示真实的你
+结果如何，你都收获了成长
+```
+
+---
+
+<div align="center">
+
+**深呼吸，你可以的！**
+
+**Go get that offer! 🎉**
+
+</div>

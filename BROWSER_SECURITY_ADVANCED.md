@@ -1,0 +1,1375 @@
+# 🛡️ AI 公司前端安全与浏览器进阶指南
+
+> 补充 SECURITY_BROWSER.md，专注于容易被忽略但至关重要的问题
+
+## 📋 目录
+
+- [网络安全进阶](#网络安全进阶)
+- [浏览器存储安全](#浏览器存储安全)
+- [AI 特有安全问题](#ai-特有安全问题)
+- [浏览器兼容性与降级](#浏览器兼容性与降级)
+- [性能与内存管理](#性能与内存管理)
+- [供应链安全](#供应链安全)
+- [监控与应急响应](#监控与应急响应)
+
+---
+
+## 网络安全进阶
+
+### 1. CSRF（跨站请求伪造）
+
+#### 为什么 AI 公司要特别注意？
+
+```
+场景：用户登录后访问恶意网站
+恶意网站发起：POST https://chat.stepfun.com/api/chat
+携带用户的 Cookie → 消耗用户 API 配额/余额
+```
+
+#### 攻击示例
+
+```html
+<!-- 恶意网站的页面 -->
+<html>
+<body>
+  <img src="https://chat.stepfun.com/api/delete-all-chats" />
+  <!-- 或者 -->
+  <form action="https://chat.stepfun.com/api/chat" method="POST">
+    <input type="hidden" name="message" value="恶意消息，消耗配额" />
+  </form>
+  <script>
+    // 自动提交表单
+    document.forms[0].submit();
+  </script>
+</body>
+</html>
+```
+
+#### 防御方案
+
+**方案 1: SameSite Cookie（推荐）**
+```javascript
+// 后端设置
+res.cookie('session', token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'strict', // ✅ 浏览器会拦截跨站请求携带此 Cookie
+  maxAge: 86400000
+});
+
+// 效果：恶意网站发起的请求不会携带 Cookie
+```
+
+**方案 2: CSRF Token（双重验证）**
+```javascript
+// 后端：生成 CSRF Token
+app.get('/api/csrf-token', (req, res) => {
+  const token = crypto.randomBytes(32).toString('hex');
+  req.session.csrfToken = token;
+  res.json({ csrfToken: token });
+});
+
+// 前端：在所有 POST 请求中携带
+async function sendMessage(message) {
+  const { csrfToken } = await fetch('/api/csrf-token').then(r => r.json());
+  
+  const res = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken // ✅ 恶意网站无法获取此 Token
+    },
+    credentials: 'include',
+    body: JSON.stringify({ message })
+  });
+  
+  return res;
+}
+
+// 后端：验证 Token
+app.post('/api/chat', (req, res) => {
+  const clientToken = req.headers['x-csrf-token'];
+  const serverToken = req.session.csrfToken;
+  
+  if (clientToken !== serverToken) {
+    return res.status(403).json({ error: 'CSRF token invalid' });
+  }
+  
+  // 继续处理...
+});
+```
+
+**方案 3: Origin/Referer 检查**
+```javascript
+// 后端中间件
+function checkOrigin(req, res, next) {
+  const allowedOrigins = [
+    'https://chat.stepfun.com',
+    'https://stepfun.com'
+  ];
+  
+  const origin = req.headers.origin || req.headers.referer;
+  
+  if (!origin || !allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+    return res.status(403).json({ error: 'Invalid origin' });
+  }
+  
+  next();
+}
+
+app.post('/api/chat', checkOrigin, handleChat);
+```
+
+---
+
+### 2. CORS 配置（AI API 调用）
+
+#### 常见错误配置
+
+```javascript
+// ❌ 危险：允许所有来源
+app.use(cors({
+  origin: '*', // 攻击者可以从任何网站调用你的 API
+  credentials: true
+}));
+
+// ❌ 危险：动态允许所有来源
+app.use(cors({
+  origin: (origin, callback) => {
+    callback(null, true); // 等同于 *
+  },
+  credentials: true
+}));
+```
+
+#### 正确配置
+
+```javascript
+// ✅ 安全：白名单
+const allowedOrigins = [
+  'https://chat.stepfun.com',
+  'https://stepfun.com',
+  process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // 允许无 Origin 的请求（如 Postman、移动 App）
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  maxAge: 86400, // 预检请求缓存 24 小时
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
+}));
+```
+
+#### 预检请求优化
+
+```javascript
+// 前端：复杂请求会触发预检
+fetch('https://api.stepfun.com/chat', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json', // ✅ 简单请求
+    'Authorization': 'Bearer xxx',      // ❌ 触发预检
+    'X-Custom-Header': 'value'         // ❌ 触发预检
+  },
+  body: JSON.stringify({ message: 'Hi' })
+});
+
+// 优化：减少预检次数
+// 方案 1：使用 Cookie 代替 Authorization header
+// 方案 2：后端设置 Access-Control-Max-Age，缓存预检结果
+```
+
+---
+
+### 3. 点击劫持（Clickjacking）
+
+#### 攻击场景
+
+```html
+<!-- 攻击者网站 -->
+<html>
+<body>
+  <h1>点击此处获取免费 GPT-4 额度！</h1>
+  <iframe 
+    src="https://chat.stepfun.com/settings/delete-account" 
+    style="opacity: 0; position: absolute; top: 0; left: 0;"
+  ></iframe>
+  <!-- 用户以为点击按钮，实际点击了 iframe 内的删除按钮 -->
+</body>
+</html>
+```
+
+#### 防御方案
+
+```javascript
+// Next.js 配置
+// next.config.js
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // ✅ 禁止被嵌入 iframe
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY' // 或 'SAMEORIGIN'
+          },
+          // ✅ CSP 更灵活的控制
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'none'" // 或 'self'
+          }
+        ]
+      }
+    ];
+  }
+};
+
+// 前端：JS 检测是否被嵌入
+if (window.self !== window.top) {
+  // 检测到被嵌入 iframe
+  window.top.location = window.self.location; // 跳出 iframe
+  // 或者显示警告
+  document.body.innerHTML = '<h1>检测到不安全的嵌入！</h1>';
+}
+```
+
+---
+
+### 4. 中间人攻击（MITM）
+
+#### 防御清单
+
+**1. 强制 HTTPS**
+```javascript
+// Next.js 中间件
+// middleware.js
+import { NextResponse } from 'next/server';
+
+export function middleware(request) {
+  // 非 HTTPS 请求重定向
+  if (request.headers.get('x-forwarded-proto') !== 'https' && 
+      process.env.NODE_ENV === 'production') {
+    return NextResponse.redirect(
+      `https://${request.headers.get('host')}${request.nextUrl.pathname}`,
+      301
+    );
+  }
+  
+  return NextResponse.next();
+}
+
+// HTTP 响应头
+// next.config.js
+headers: [
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload'
+    // 2 年内浏览器自动使用 HTTPS
+  }
+]
+```
+
+**2. 证书验证**
+```javascript
+// Node.js 后端调用 AI API
+const https = require('https');
+const fs = require('fs');
+
+// ✅ 验证服务器证书
+const agent = new https.Agent({
+  rejectUnauthorized: true, // 拒绝自签名证书
+  // ca: fs.readFileSync('ca-bundle.crt') // 指定 CA 证书（可选）
+});
+
+fetch('https://api.stepfun.com/v1/chat', {
+  method: 'POST',
+  agent,
+  body: JSON.stringify({ message: 'Hi' })
+});
+
+// ❌ 危险：跳过证书验证（开发环境也不推荐）
+const insecureAgent = new https.Agent({
+  rejectUnauthorized: false // 中间人可以伪造证书
+});
+```
+
+**3. 子资源完整性（SRI）**
+```html
+<!-- ✅ 验证 CDN 资源未被篡改 -->
+<script 
+  src="https://cdn.example.com/lib.js"
+  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/ux..."
+  crossorigin="anonymous"
+></script>
+
+<!-- 生成 SRI hash -->
+<!-- openssl dgst -sha384 -binary lib.js | openssl base64 -A -->
+```
+
+---
+
+## 浏览器存储安全
+
+### 1. IndexedDB 安全
+
+#### 风险点
+
+```javascript
+// ❌ 敏感数据明文存储
+db.add('conversations', {
+  id: 1,
+  apiKey: 'sk-xxx', // 明文存储 API Key
+  messages: [...]
+});
+
+// ✅ 加密存储
+import CryptoJS from 'crypto-js';
+
+// 使用用户密码派生密钥
+const deriveKey = (password, salt) => {
+  return CryptoJS.PBKDF2(password, salt, {
+    keySize: 256/32,
+    iterations: 10000
+  }).toString();
+};
+
+// 加密存储
+const encrypt = (data, key) => {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
+};
+
+// 解密读取
+const decrypt = (encrypted, key) => {
+  const bytes = CryptoJS.AES.decrypt(encrypted, key);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+};
+
+// 使用
+const userKey = deriveKey(userPassword, 'unique-salt');
+const encrypted = encrypt({ apiKey: 'sk-xxx', messages: [...] }, userKey);
+db.add('conversations', { id: 1, data: encrypted });
+```
+
+#### 配额管理
+
+```javascript
+// 检查存储配额
+async function checkQuota() {
+  if (!navigator.storage || !navigator.storage.estimate) {
+    return { usage: 0, quota: 0 };
+  }
+  
+  const estimate = await navigator.storage.estimate();
+  const percentUsed = (estimate.usage / estimate.quota * 100).toFixed(2);
+  
+  console.log(`已使用: ${(estimate.usage / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`总配额: ${(estimate.quota / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`使用率: ${percentUsed}%`);
+  
+  // ✅ 接近配额时清理旧数据
+  if (percentUsed > 80) {
+    await cleanupOldConversations();
+  }
+  
+  return estimate;
+}
+
+// 清理策略：LRU（最近最少使用）
+async function cleanupOldConversations() {
+  const db = await openDB();
+  const conversations = await db.getAll('conversations');
+  
+  // 按最后访问时间排序
+  conversations.sort((a, b) => a.lastAccess - b.lastAccess);
+  
+  // 删除最旧的 20%
+  const toDelete = conversations.slice(0, Math.floor(conversations.length * 0.2));
+  for (const conv of toDelete) {
+    await db.delete('conversations', conv.id);
+  }
+  
+  console.log(`清理了 ${toDelete.length} 条旧对话`);
+}
+```
+
+---
+
+### 2. LocalStorage 安全
+
+#### 容量限制与错误处理
+
+```javascript
+// LocalStorage 限制：通常 5-10MB
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    if (e.name === 'QuotaExceededError') {
+      console.error('LocalStorage 已满');
+      
+      // 策略 1：清理旧数据
+      const keys = Object.keys(localStorage);
+      const oldKeys = keys
+        .filter(k => k.startsWith('chat_'))
+        .sort((a, b) => {
+          const aTime = JSON.parse(localStorage.getItem(a))?.timestamp || 0;
+          const bTime = JSON.parse(localStorage.getItem(b))?.timestamp || 0;
+          return aTime - bTime;
+        });
+      
+      // 删除最旧的 30%
+      const toDelete = oldKeys.slice(0, Math.floor(oldKeys.length * 0.3));
+      toDelete.forEach(k => localStorage.removeItem(k));
+      
+      // 重试
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (e2) {
+        // 策略 2：降级到 IndexedDB
+        return fallbackToIndexedDB(key, value);
+      }
+    }
+    
+    return false;
+  }
+}
+
+// 降级到 IndexedDB
+async function fallbackToIndexedDB(key, value) {
+  const db = await openDB('fallback-storage', 1, {
+    upgrade(db) {
+      db.createObjectStore('kv');
+    }
+  });
+  
+  await db.put('kv', value, key);
+  return true;
+}
+```
+
+---
+
+## AI 特有安全问题
+
+### 1. API Key 泄露防护
+
+#### 环境变量管理
+
+```javascript
+// ❌ 危险：前端直接使用 API Key
+const response = await fetch('https://api.stepfun.com/v1/chat', {
+  headers: {
+    'Authorization': 'Bearer sk-xxx' // ⚠️ 暴露在客户端代码中
+  }
+});
+
+// ✅ 安全：通过后端代理
+// 前端
+const response = await fetch('/api/chat', {
+  method: 'POST',
+  body: JSON.stringify({ message: 'Hi' })
+});
+
+// 后端 (Next.js API Route)
+// app/api/chat/route.js
+export async function POST(request) {
+  const { message } = await request.json();
+  
+  // API Key 保存在服务端环境变量
+  const response = await fetch('https://api.stepfun.com/v1/chat', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.STEPFUN_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message })
+  });
+  
+  return response;
+}
+
+// .env.local（不提交到 Git）
+STEPFUN_API_KEY=sk-xxx
+
+// .gitignore
+.env.local
+.env.*.local
+```
+
+#### Source Map 安全
+
+```javascript
+// next.config.js
+module.exports = {
+  // ❌ 生产环境暴露源码
+  productionBrowserSourceMaps: true,
+  
+  // ✅ 仅在内部错误监控时上传 Source Map
+  productionBrowserSourceMaps: false,
+  
+  webpack: (config, { isServer, dev }) => {
+    if (!dev && !isServer) {
+      // 生成 Source Map 但不公开
+      config.devtool = 'hidden-source-map';
+      
+      // 上传到 Sentry（内部访问）
+      if (process.env.SENTRY_AUTH_TOKEN) {
+        config.plugins.push(
+          new SentryWebpackPlugin({
+            include: '.next',
+            ignore: ['node_modules'],
+            urlPrefix: '~/_next',
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: 'your-org',
+            project: 'your-project'
+          })
+        );
+      }
+    }
+    
+    return config;
+  }
+};
+```
+
+---
+
+### 2. Rate Limiting（防止滥用）
+
+#### 前端限流
+
+```javascript
+// 简单的令牌桶算法
+class RateLimiter {
+  constructor(maxRequests, timeWindow) {
+    this.maxRequests = maxRequests; // 最大请求数
+    this.timeWindow = timeWindow;   // 时间窗口（毫秒）
+    this.requests = [];
+  }
+  
+  async checkLimit() {
+    const now = Date.now();
+    
+    // 清理过期请求
+    this.requests = this.requests.filter(
+      time => now - time < this.timeWindow
+    );
+    
+    // 检查是否超限
+    if (this.requests.length >= this.maxRequests) {
+      const oldestRequest = this.requests[0];
+      const waitTime = this.timeWindow - (now - oldestRequest);
+      
+      throw new Error(
+        `请求过于频繁，请 ${Math.ceil(waitTime / 1000)} 秒后重试`
+      );
+    }
+    
+    // 记录本次请求
+    this.requests.push(now);
+  }
+}
+
+// 使用：每分钟最多 10 次请求
+const limiter = new RateLimiter(10, 60000);
+
+async function sendMessage(message) {
+  try {
+    await limiter.checkLimit();
+    
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message })
+    });
+    
+    return response;
+  } catch (error) {
+    alert(error.message);
+  }
+}
+```
+
+#### 后端限流
+
+```javascript
+// Express 中间件
+import rateLimit from 'express-rate-limit';
+import RedisStore from 'rate-limit-redis';
+import Redis from 'ioredis';
+
+const redis = new Redis(process.env.REDIS_URL);
+
+// 全局限流
+const globalLimiter = rateLimit({
+  store: new RedisStore({
+    client: redis,
+    prefix: 'rl:global:'
+  }),
+  windowMs: 60 * 1000, // 1 分钟
+  max: 100, // 最多 100 次请求
+  message: '请求过于频繁，请稍后重试',
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+// API 端点限流（更严格）
+const apiLimiter = rateLimit({
+  store: new RedisStore({
+    client: redis,
+    prefix: 'rl:api:'
+  }),
+  windowMs: 60 * 1000,
+  max: 20, // AI API 每分钟最多 20 次
+  keyGenerator: (req) => {
+    // 按用户 ID 限流
+    return req.user?.id || req.ip;
+  },
+  handler: (req, res) => {
+    res.status(429).json({
+      error: 'API 调用频率超限',
+      retryAfter: Math.ceil(req.rateLimit.resetTime / 1000)
+    });
+  }
+});
+
+// 应用
+app.use('/api/', globalLimiter);
+app.use('/api/chat', apiLimiter);
+
+// 高级：动态限流（根据用户等级）
+const dynamicLimiter = (req, res, next) => {
+  const user = req.user;
+  
+  let maxRequests = 20; // 默认
+  if (user?.plan === 'pro') maxRequests = 100;
+  if (user?.plan === 'enterprise') maxRequests = 1000;
+  
+  const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: maxRequests,
+    keyGenerator: () => `${user.id}:${user.plan}`
+  });
+  
+  return limiter(req, res, next);
+};
+```
+
+---
+
+### 3. 敏感数据泄露
+
+#### 日志脱敏
+
+```javascript
+// ❌ 危险：日志包含敏感信息
+console.log('User request:', {
+  apiKey: user.apiKey,
+  password: user.password,
+  message: user.message
+});
+
+// ✅ 安全：脱敏处理
+function sanitizeLog(obj) {
+  const sensitiveKeys = [
+    'password', 'apiKey', 'token', 'secret',
+    'creditCard', 'ssn', 'privateKey'
+  ];
+  
+  const sanitized = { ...obj };
+  
+  for (const key in sanitized) {
+    if (sensitiveKeys.some(sk => key.toLowerCase().includes(sk))) {
+      sanitized[key] = '***REDACTED***';
+    } else if (typeof sanitized[key] === 'object') {
+      sanitized[key] = sanitizeLog(sanitized[key]);
+    }
+  }
+  
+  return sanitized;
+}
+
+console.log('User request:', sanitizeLog(user));
+// 输出: { apiKey: '***REDACTED***', message: 'Hi' }
+```
+
+#### 错误信息脱敏
+
+```javascript
+// ❌ 危险：暴露内部信息
+app.use((err, req, res, next) => {
+  res.status(500).json({
+    error: err.message,
+    stack: err.stack, // ⚠️ 暴露代码结构
+    query: req.query  // ⚠️ 可能包含敏感参数
+  });
+});
+
+// ✅ 安全：生产环境使用通用错误
+app.use((err, req, res, next) => {
+  // 开发环境：详细错误
+  if (process.env.NODE_ENV === 'development') {
+    return res.status(500).json({
+      error: err.message,
+      stack: err.stack
+    });
+  }
+  
+  // 生产环境：通用错误
+  console.error('Error:', {
+    message: err.message,
+    stack: err.stack,
+    user: req.user?.id,
+    path: req.path
+  });
+  
+  // 发送到错误监控服务（Sentry）
+  Sentry.captureException(err);
+  
+  res.status(500).json({
+    error: '服务器内部错误',
+    errorId: generateErrorId() // 用于客服查询
+  });
+});
+```
+
+---
+
+## 浏览器兼容性与降级
+
+### 1. SSE 浏览器支持检测
+
+```javascript
+// 检测 EventSource 支持
+function checkSSESupport() {
+  if (!window.EventSource) {
+    console.warn('浏览器不支持 SSE，降级到轮询');
+    return false;
+  }
+  return true;
+}
+
+// 降级方案：长轮询
+async function streamWithPolling(message) {
+  let messageId = null;
+  
+  // 发起请求
+  const initResponse = await fetch('/api/chat', {
+    method: 'POST',
+    body: JSON.stringify({ message })
+  });
+  
+  messageId = (await initResponse.json()).messageId;
+  
+  // 轮询获取结果
+  while (true) {
+    const response = await fetch(`/api/chat/${messageId}`);
+    const data = await response.json();
+    
+    if (data.status === 'completed') {
+      return data.result;
+    }
+    
+    if (data.status === 'streaming') {
+      // 渲染部分结果
+      updateUI(data.partial);
+    }
+    
+    // 等待 1 秒后再次轮询
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}
+
+// 自动选择方案
+async function sendMessage(message) {
+  if (checkSSESupport()) {
+    return await streamWithSSE(message);
+  } else {
+    return await streamWithPolling(message);
+  }
+}
+```
+
+---
+
+### 2. IndexedDB 降级
+
+```javascript
+// 统一的存储接口
+class StorageAdapter {
+  constructor() {
+    this.useIndexedDB = this.checkIndexedDBSupport();
+  }
+  
+  checkIndexedDBSupport() {
+    try {
+      return 'indexedDB' in window;
+    } catch {
+      return false;
+    }
+  }
+  
+  async set(key, value) {
+    if (this.useIndexedDB) {
+      return this.setIndexedDB(key, value);
+    } else {
+      return this.setLocalStorage(key, value);
+    }
+  }
+  
+  async get(key) {
+    if (this.useIndexedDB) {
+      return this.getIndexedDB(key);
+    } else {
+      return this.getLocalStorage(key);
+    }
+  }
+  
+  async setIndexedDB(key, value) {
+    const db = await openDB('storage', 1);
+    await db.put('kv', value, key);
+  }
+  
+  async getIndexedDB(key) {
+    const db = await openDB('storage', 1);
+    return await db.get('kv', key);
+  }
+  
+  setLocalStorage(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      console.error('LocalStorage 写入失败:', e);
+      // 降级到内存存储
+      this.memoryStore = this.memoryStore || {};
+      this.memoryStore[key] = value;
+      return true;
+    }
+  }
+  
+  getLocalStorage(key) {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch {
+      // 从内存读取
+      return this.memoryStore?.[key] || null;
+    }
+  }
+}
+
+// 使用
+const storage = new StorageAdapter();
+await storage.set('conversation', { messages: [...] });
+```
+
+---
+
+## 性能与内存管理
+
+### 1. 长时间对话的内存泄漏
+
+#### 问题场景
+
+```javascript
+// ❌ 内存泄漏：事件监听器未清理
+let eventSource = null;
+
+function startStreaming() {
+  eventSource = new EventSource('/api/chat/stream');
+  
+  eventSource.addEventListener('message', (event) => {
+    // 处理消息
+    handleMessage(event.data);
+  });
+  
+  // ⚠️ 用户多次点击"新对话"，每次创建新的 EventSource
+  // 但旧的监听器没有清理，导致内存泄漏
+}
+
+// ✅ 正确：清理旧连接
+function startStreaming() {
+  // 清理旧连接
+  if (eventSource) {
+    eventSource.close();
+    eventSource = null;
+  }
+  
+  eventSource = new EventSource('/api/chat/stream');
+  
+  const messageHandler = (event) => {
+    handleMessage(event.data);
+  };
+  
+  eventSource.addEventListener('message', messageHandler);
+  
+  // 返回清理函数
+  return () => {
+    eventSource.removeEventListener('message', messageHandler);
+    eventSource.close();
+    eventSource = null;
+  };
+}
+
+// React 中使用
+useEffect(() => {
+  const cleanup = startStreaming();
+  return cleanup; // 组件卸载时清理
+}, [conversationId]);
+```
+
+#### 消息历史管理
+
+```javascript
+// ❌ 内存泄漏：无限增长的消息数组
+const [messages, setMessages] = useState([]);
+
+// 用户对话 1000 轮，数组持续增长
+const addMessage = (message) => {
+  setMessages(prev => [...prev, message]); // ⚠️ 内存持续增长
+};
+
+// ✅ 优化：限制内存中的消息数量
+const MAX_MESSAGES_IN_MEMORY = 100;
+
+const addMessage = (message) => {
+  setMessages(prev => {
+    const updated = [...prev, message];
+    
+    // 超过限制，将旧消息持久化到 IndexedDB
+    if (updated.length > MAX_MESSAGES_IN_MEMORY) {
+      const toArchive = updated.slice(0, 50);
+      archiveMessages(toArchive); // 异步持久化
+      
+      return updated.slice(50); // 只保留最近 50 条
+    }
+    
+    return updated;
+  });
+};
+
+// 持久化函数
+async function archiveMessages(messages) {
+  const db = await openDB('chat-archive', 1);
+  for (const msg of messages) {
+    await db.put('messages', msg);
+  }
+}
+
+// 需要时加载历史消息
+async function loadArchivedMessages(conversationId) {
+  const db = await openDB('chat-archive', 1);
+  return await db.getAllFromIndex(
+    'messages',
+    'conversationId',
+    conversationId
+  );
+}
+```
+
+---
+
+### 2. 虚拟滚动优化
+
+```javascript
+// 长对话列表：只渲染可见区域
+import { FixedSizeList } from 'react-window';
+
+function ConversationList({ conversations }) {
+  const Row = ({ index, style }) => {
+    const conversation = conversations[index];
+    
+    return (
+      <div style={style}>
+        <ConversationItem data={conversation} />
+      </div>
+    );
+  };
+  
+  return (
+    <FixedSizeList
+      height={600}        // 可见区域高度
+      itemCount={conversations.length}
+      itemSize={80}       // 每项高度
+      width="100%"
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}
+
+// 效果：10000 条对话，只渲染可见的 ~10 条
+// 性能提升 100 倍+
+```
+
+---
+
+## 供应链安全
+
+### 1. npm 依赖审计
+
+```bash
+# 检查已知漏洞
+npm audit
+
+# 自动修复（谨慎使用）
+npm audit fix
+
+# 查看详细信息
+npm audit --json | jq '.vulnerabilities'
+
+# 忽略特定漏洞（临时方案）
+echo "advisories:\n  GHSA-xxxx-xxxx: ignore" > .npmrc
+```
+
+### 2. 依赖锁定
+
+```json
+// package.json - 锁定版本
+{
+  "dependencies": {
+    // ❌ 危险：自动更新到最新版
+    "react": "^18.0.0",
+    
+    // ✅ 安全：锁定精确版本
+    "react": "18.2.0"
+  },
+  
+  "scripts": {
+    // 检查过期依赖
+    "check-updates": "npx npm-check-updates",
+    
+    // 审计依赖
+    "audit": "npm audit && npm run check-licenses",
+    
+    // 检查许可证
+    "check-licenses": "npx license-checker --onlyAllow 'MIT;Apache-2.0;BSD-3-Clause;ISC'"
+  }
+}
+```
+
+### 3. Subresource Integrity (SRI)
+
+```javascript
+// next.config.js - 为 CDN 资源添加 SRI
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      }
+    ];
+  }
+};
+
+// 使用 next/script 自动生成 SRI
+import Script from 'next/script';
+
+<Script
+  src="https://cdn.example.com/lib.js"
+  integrity="sha384-..."
+  crossOrigin="anonymous"
+/>;
+```
+
+---
+
+## 监控与应急响应
+
+### 1. 错误监控（Sentry）
+
+```javascript
+// sentry.config.js
+import * as Sentry from '@sentry/nextjs';
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  
+  // 性能监控
+  tracesSampleRate: 0.1, // 10% 请求
+  
+  // 环境
+  environment: process.env.NODE_ENV,
+  
+  // 敏感数据过滤
+  beforeSend(event, hint) {
+    // 过滤敏感信息
+    if (event.request?.headers) {
+      delete event.request.headers['Authorization'];
+      delete event.request.headers['Cookie'];
+    }
+    
+    // 过滤 URL 参数
+    if (event.request?.url) {
+      const url = new URL(event.request.url);
+      url.searchParams.delete('token');
+      url.searchParams.delete('apiKey');
+      event.request.url = url.toString();
+    }
+    
+    return event;
+  },
+  
+  // 忽略特定错误
+  ignoreErrors: [
+    'ResizeObserver loop limit exceeded',
+    'Non-Error promise rejection captured'
+  ]
+});
+
+// 使用
+try {
+  await sendMessage(message);
+} catch (error) {
+  Sentry.captureException(error, {
+    tags: {
+      feature: 'chat',
+      conversationId: currentConversation.id
+    },
+    extra: {
+      messageLength: message.length,
+      modelUsed: 'step-1-8k'
+    }
+  });
+  
+  throw error;
+}
+```
+
+### 2. 性能监控
+
+```javascript
+// 监控关键指标
+function measurePerformance() {
+  // Web Vitals
+  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+    getCLS(console.log);  // Cumulative Layout Shift
+    getFID(console.log);  // First Input Delay
+    getFCP(console.log);  // First Contentful Paint
+    getLCP(console.log);  // Largest Contentful Paint
+    getTTFB(console.log); // Time to First Byte
+  });
+  
+  // 自定义指标
+  performance.mark('chat-start');
+  await sendMessage(message);
+  performance.mark('chat-end');
+  
+  performance.measure('chat-duration', 'chat-start', 'chat-end');
+  const measure = performance.getEntriesByName('chat-duration')[0];
+  
+  console.log(`对话耗时: ${measure.duration}ms`);
+  
+  // 上报到分析服务
+  analytics.track('chat_performance', {
+    duration: measure.duration,
+    messageLength: message.length
+  });
+}
+```
+
+### 3. 安全事件响应流程
+
+```javascript
+// 安全事件检测
+class SecurityMonitor {
+  constructor() {
+    this.suspiciousPatterns = [
+      /(<script|javascript:|on\w+=)/i,
+      /(union|select|drop|insert|update|delete).+(from|table|database)/i,
+      /(\.\.\/|\.\.\\)/g, // 路径遍历
+    ];
+    
+    this.rateLimitMap = new Map();
+  }
+  
+  // 检测可疑输入
+  detectSuspiciousInput(input, userId) {
+    for (const pattern of this.suspiciousPatterns) {
+      if (pattern.test(input)) {
+        this.reportSecurityEvent({
+          type: 'suspicious_input',
+          severity: 'high',
+          userId,
+          pattern: pattern.source,
+          input: input.slice(0, 100) // 截断记录
+        });
+        
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  // 检测异常频率
+  detectAnomalousRate(userId) {
+    const now = Date.now();
+    const userRequests = this.rateLimitMap.get(userId) || [];
+    
+    // 清理 1 分钟前的记录
+    const recentRequests = userRequests.filter(time => now - time < 60000);
+    
+    // 1 分钟内超过 100 次请求
+    if (recentRequests.length > 100) {
+      this.reportSecurityEvent({
+        type: 'rate_anomaly',
+        severity: 'high',
+        userId,
+        requestCount: recentRequests.length
+      });
+      
+      return true;
+    }
+    
+    recentRequests.push(now);
+    this.rateLimitMap.set(userId, recentRequests);
+    
+    return false;
+  }
+  
+  // 上报安全事件
+  reportSecurityEvent(event) {
+    // 记录日志
+    console.error('[Security]', event);
+    
+    // 发送到 Sentry
+    Sentry.captureMessage(`Security Event: ${event.type}`, {
+      level: event.severity,
+      extra: event
+    });
+    
+    // 严重事件：通知管理员
+    if (event.severity === 'critical') {
+      fetch('/api/admin/security-alert', {
+        method: 'POST',
+        body: JSON.stringify(event)
+      });
+    }
+    
+    // 自动响应：临时封禁
+    if (event.type === 'rate_anomaly') {
+      this.temporaryBan(event.userId, 3600000); // 1 小时
+    }
+  }
+  
+  temporaryBan(userId, duration) {
+    // 添加到黑名单
+    const bannedUntil = Date.now() + duration;
+    // 存储到 Redis
+    redis.set(`banned:${userId}`, bannedUntil, 'PX', duration);
+  }
+}
+
+// 全局使用
+const securityMonitor = new SecurityMonitor();
+
+// 在 API 路由中集成
+export async function POST(request) {
+  const { message } = await request.json();
+  const userId = getUserId(request);
+  
+  // 检测可疑输入
+  if (securityMonitor.detectSuspiciousInput(message, userId)) {
+    return Response.json(
+      { error: '检测到可疑输入' },
+      { status: 400 }
+    );
+  }
+  
+  // 检测异常频率
+  if (securityMonitor.detectAnomalousRate(userId)) {
+    return Response.json(
+      { error: '请求过于频繁' },
+      { status: 429 }
+    );
+  }
+  
+  // 继续处理...
+}
+```
+
+---
+
+## 面试应对
+
+### 常见追问
+
+**Q: 如何防止 XSS？**
+> 多层防御：
+> 1. 输入验证（检测 Prompt 注入）
+> 2. 输出清洗（DOMPurify）
+> 3. 安全渲染（React 自动转义）
+> 4. CSP 策略（禁止内联脚本）
+> 5. httpOnly Cookie（防止 Token 窃取）
+
+**Q: CSRF 和 XSS 有什么区别？**
+> - XSS：攻击者注入恶意代码，在用户浏览器执行
+> - CSRF：攻击者诱导用户浏览器发起请求，利用已登录状态
+> - 防御：XSS 需要清洗输出，CSRF 需要验证请求来源
+
+**Q: 如何保护 API Key 不被泄露？**
+> 1. 后端代理（API Key 只在服务端）
+> 2. 环境变量（.env.local，不提交 Git）
+> 3. Source Map 隐藏（生产环境不公开）
+> 4. 日志脱敏（不记录敏感信息）
+> 5. 错误信息脱敏（生产环境不暴露细节）
+
+**Q: IndexedDB 配额不足怎么办？**
+> 1. 检测配额（navigator.storage.estimate）
+> 2. LRU 清理策略（删除最久未访问的对话）
+> 3. 降级到 LocalStorage（小数据）
+> 4. 云端同步（重要数据上传服务器）
+> 5. 提示用户清理（超过 80% 时）
+
+**Q: 如何应对 DDoS 攻击？**
+> 1. 前端限流（令牌桶算法）
+> 2. 后端限流（Redis + express-rate-limit）
+> 3. CDN 防护（Cloudflare）
+> 4. 动态限流（根据用户等级调整）
+> 5. 异常检测（自动封禁异常 IP）
+
+---
+
+## 安全检查清单
+
+开发完成后，使用此清单检查：
+
+- [ ] XSS 防御：DOMPurify 清洗所有 AI 输出
+- [ ] CSRF 防御：SameSite Cookie + CSRF Token
+- [ ] API Key：不在前端代码中硬编码
+- [ ] 敏感数据：不在日志中记录
+- [ ] 错误信息：生产环境不暴露细节
+- [ ] Source Map：生产环境不公开
+- [ ] HTTPS：强制使用 HTTPS
+- [ ] CSP：配置内容安全策略
+- [ ] X-Frame-Options：防止点击劫持
+- [ ] Rate Limiting：前后端都实现限流
+- [ ] 依赖审计：运行 npm audit
+- [ ] Sentry：配置错误监控
+- [ ] 性能监控：配置 Web Vitals
+- [ ] 安全事件响应：实现自动检测和响应
+
+---
+
+**总结**: AI 公司前端面临独特的安全挑战，需要在用户体验、性能和安全之间找到平衡。关键是**多层防御 + 持续监控 + 快速响应**。

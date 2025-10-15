@@ -1,272 +1,200 @@
-'use client';
+import Link from 'next/link';
 
-// ===== 流式对话知识点 9: React Client Component =====
-// 流式聊天需要使用客户端组件来处理 EventSource 和实时状态更新
+const demos = [
+  {
+    category: 'React Hooks',
+    items: [
+      { title: 'useDebounce 防抖', path: '/demos/hooks/use-debounce', desc: '自定义防抖 Hook 实现' },
+      { title: 'useThrottle 节流', path: '/demos/hooks/use-throttle', desc: '自定义节流 Hook 实现' },
+      { title: 'useLocalStorage', path: '/demos/hooks/use-local-storage', desc: '持久化状态管理' },
+    ]
+  },
+  {
+    category: '性能优化',
+    items: [
+      { title: '虚拟列表', path: '/demos/performance/virtual-list', desc: '大数据列表渲染优化' },
+      { title: 'memo & useMemo', path: '/demos/performance/memoization', desc: 'React 性能优化实践' },
+      { title: '懒加载图片', path: '/demos/performance/lazy-image', desc: 'Intersection Observer 实现' },
+    ]
+  },
+  {
+    category: '状态管理',
+    items: [
+      { title: 'Context + Reducer', path: '/demos/state/context-reducer', desc: '轻量级状态管理方案' },
+      { title: '发布订阅模式', path: '/demos/state/pub-sub', desc: '跨组件通信' },
+    ]
+  },
+  {
+    category: '常见功能',
+    items: [
+      { title: '拖拽排序', path: '/demos/features/drag-sort', desc: 'HTML5 Drag & Drop API' },
+      { title: '无限滚动', path: '/demos/features/infinite-scroll', desc: '分页加载实现' },
+      { title: '表单验证', path: '/demos/features/form-validation', desc: '自定义表单校验' },
+      { title: '流式聊天', path: '/demos/features/stream-chat', desc: 'SSE 流式响应 + 打字效果' },
+    ]
+  },
+  {
+    category: '算法可视化',
+    items: [
+      { title: '防抖节流对比', path: '/demos/algorithm/debounce-throttle', desc: '可视化演示区别' },
+      { title: '二分查找', path: '/demos/algorithm/binary-search', desc: '动画演示查找过程' },
+    ]
+  },
+  {
+    category: 'JavaScript 基础',
+    items: [
+      { title: '闭包演示', path: '/demos/js-basic/closure', desc: '计数器、私有变量、作用域链' },
+      { title: '原型链', path: '/demos/js-basic/prototype', desc: '可视化原型链关系' },
+      { title: 'this 指向', path: '/demos/js-basic/this-binding', desc: '各种场景下的 this' },
+      { title: '事件循环', path: '/demos/js-basic/event-loop', desc: '宏任务 & 微任务执行顺序' },
+      { title: 'Promise 原理', path: '/demos/js-basic/promise', desc: '手写 Promise 实现' },
+      { title: '深拷贝 vs 浅拷贝', path: '/demos/js-basic/clone', desc: '对比演示与实现' },
+    ]
+  },
+  {
+    category: 'CSS 技巧',
+    items: [
+      { title: '居中方案大全', path: '/demos/css/center', desc: '水平垂直居中 N 种方法' },
+      { title: '经典布局', path: '/demos/css/layout', desc: '圣杯/双飞翼/Flex/Grid' },
+      { title: 'CSS 动画', path: '/demos/css/animation', desc: 'Transition & Keyframes' },
+      { title: 'BFC 原理', path: '/demos/css/bfc', desc: '块级格式化上下文演示' },
+      { title: '响应式布局', path: '/demos/css/responsive', desc: 'Media Query + Flex' },
+    ]
+  },
+  {
+    category: '浏览器相关',
+    items: [
+      { title: '跨域解决方案', path: '/demos/browser/cors', desc: 'CORS、JSONP、代理演示' },
+      { title: '本地存储对比', path: '/demos/browser/storage-cache', desc: 'LocalStorage/SessionStorage/Cookie' },
+      { title: '事件委托', path: '/demos/browser/event-delegation', desc: 'Event Delegation 实战' },
+      { title: '浏览器缓存', path: '/demos/browser/cache', desc: '强缓存 & 协商缓存' },
+    ]
+  },
+  {
+    category: '网络与性能',
+    items: [
+      { title: 'AJAX 封装', path: '/demos/network/ajax', desc: '手写 AJAX & Fetch' },
+      { title: 'WebSocket', path: '/demos/network/websocket', desc: '实时双向通信' },
+      { title: '图片优化', path: '/demos/network/image-optimization', desc: '预加载 & 懒加载 & 压缩' },
+    ]
+  },
+  {
+    category: '手写系列',
+    items: [
+      { title: '手写 Promise', path: '/demos/handwrite/promise', desc: '符合 A+ 规范' },
+      { title: '手写 call/apply/bind', path: '/demos/handwrite/call-apply-bind', desc: '改变 this 指向' },
+      { title: '手写深拷贝', path: '/demos/handwrite/deep-clone', desc: '处理循环引用' },
+      { title: '手写 EventEmitter', path: '/demos/handwrite/event-emitter', desc: '发布订阅模式' },
+      { title: '手写节流防抖', path: '/demos/handwrite/debounce-throttle', desc: '带取消功能' },
+    ]
+  },
+  {
+    category: 'AI 前端集成',
+    items: [
+      { title: 'SSE 流式对话', path: '/demos/ai/stream-chat', desc: 'Server-Sent Events 实时打字效果' },
+      { title: '流式代码高亮', path: '/demos/ai/code-highlight', desc: 'Prism.js 实时语法高亮' },
+      { title: 'LaTeX 公式渲染', path: '/demos/ai/latex-render', desc: 'KaTeX 数学公式实时渲染' },
+      { title: '停止生成功能', path: '/demos/ai/abort-generation', desc: 'AbortController 取消请求' },
+      { title: '多会话管理', path: '/demos/ai/multi-session', desc: '会话切换 + IndexedDB 持久化' },
+      { title: '对话历史优化', path: '/demos/ai/chat-history', desc: '虚拟滚动 + 分页加载' },
+      { title: 'MCP 客户端', path: '/demos/ai/mcp-client', desc: 'Model Context Protocol 实现' },
+      { title: 'Function Calling', path: '/demos/ai/function-calling', desc: 'AI 调用本地函数（天气、搜索）' },
+      { title: 'RAG 知识库', path: '/demos/ai/rag', desc: '向量检索 + 语义搜索' },
+      { title: 'Token 计数器', path: '/demos/ai/token-counter', desc: 'tiktoken.js 实时计算成本' },
+      { title: 'Prompt 工程', path: '/demos/ai/prompt-engineering', desc: 'Few-shot、CoT 优化技巧' },
+      { title: '流式 Markdown', path: '/demos/ai/stream-markdown', desc: '边接收边渲染 MD 格式' },
+    ]
+  },
+  {
+    category: 'TypeScript 实战',
+    items: [
+      { title: '泛型封装 API', path: '/demos/typescript/generic-api', desc: '类型安全的请求封装' },
+      { title: '类型体操实战', path: '/demos/typescript/type-challenges', desc: 'Partial/Pick/Omit 实现' },
+      { title: '类型守卫', path: '/demos/typescript/type-guards', desc: '类型收窄与判断' },
+      { title: '装饰器实现', path: '/demos/typescript/decorators', desc: '方法装饰器与日志' },
+      { title: '高级类型', path: '/demos/typescript/advanced-types', desc: '联合/交叉/映射类型' },
+    ]
+  },
+  {
+    category: 'React 高级特性',
+    items: [
+      { title: 'Error Boundary', path: '/demos/react-advanced/error-boundary', desc: '错误边界处理' },
+      { title: 'Suspense + lazy', path: '/demos/react-advanced/suspense', desc: '懒加载与占位' },
+      { title: 'Portal 模态框', path: '/demos/react-advanced/portal', desc: '传送门实现弹窗' },
+      { title: 'useImperativeHandle', path: '/demos/react-advanced/imperative-handle', desc: 'Ref 转发实战' },
+      { title: 'Concurrent Mode', path: '/demos/react-advanced/concurrent', desc: 'useTransition & useDeferredValue' },
+    ]
+  },
+  {
+    category: '工程化实践',
+    items: [
+      { title: 'Vite 打包优化', path: '/demos/engineering/vite-optimization', desc: '代码分割与 Tree Shaking' },
+      { title: '单元测试', path: '/demos/engineering/unit-test', desc: 'Jest + React Testing Library' },
+      { title: 'CI/CD 流程', path: '/demos/engineering/ci-cd', desc: 'GitHub Actions 自动部署' },
+      { title: 'Monorepo 管理', path: '/demos/engineering/monorepo', desc: 'pnpm workspace 实践' },
+    ]
+  }
+];
 
-import { useState, useRef, useEffect } from 'react';
-
-export default function StreamChatDemo() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isThinking, setIsThinking] = useState(false);
-  const [thinkingContent, setThinkingContent] = useState('');
-  const messagesEndRef = useRef(null);
-
-  // ===== 知识点 10: 自动滚动到底部 =====
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, thinkingContent]);
-
-  // ===== 知识点 11: 打字效果实现 =====
-  // 通过逐字追加内容来实现打字机效果
-  const appendToLastMessage = (content, type = 'message') => {
-    setMessages(prev => {
-      const newMessages = [...prev];
-      const lastMessage = newMessages[newMessages.length - 1];
-      
-      if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.completed) {
-        // ⚠️ 重要：必须创建新对象，不能直接修改！否则会导致重复渲染
-        newMessages[newMessages.length - 1] = {
-          ...lastMessage,
-          content: lastMessage.content + content
-        };
-        return newMessages;
-      } else {
-        return [...newMessages, { 
-          role: 'assistant', 
-          content, 
-          completed: false 
-        }];
-      }
-    });
-  };
-
-  // ===== 知识点 12: 处理流式响应 =====
-  const handleStreamResponse = async (response) => {
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        
-        // 保留不完整的行
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (!line.trim() || !line.startsWith('data: ')) continue;
-          
-          const data = line.slice(6);
-          
-          if (data === '[DONE]') {
-            // ===== 知识点 13: 流结束处理 =====
-            setMessages(prev => {
-              const newMessages = [...prev];
-              const lastMessage = newMessages[newMessages.length - 1];
-              if (lastMessage && lastMessage.role === 'assistant') {
-                // ⚠️ 创建新对象标记完成状态
-                newMessages[newMessages.length - 1] = {
-                  ...lastMessage,
-                  completed: true
-                };
-              }
-              return newMessages;
-            });
-            setIsThinking(false);
-            setThinkingContent('');
-            setIsLoading(false);
-            return;
-          }
-
-          try {
-            const json = JSON.parse(data);
-            
-            // ===== 知识点 14: 思考状态展示 =====
-            if (json.type === 'thinking') {
-              setIsThinking(true);
-              setThinkingContent(prev => prev + json.content);
-            } 
-            // ===== 知识点 15: 消息内容打字效果 =====
-            else if (json.type === 'message') {
-              setIsThinking(false);
-              appendToLastMessage(json.content);
-            }
-          } catch (e) {
-            console.error('Failed to parse streaming data:', e);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Stream reading error:', error);
-      setIsLoading(false);
-      setIsThinking(false);
-    }
-  };
-
-  // ===== 知识点 16: 发送消息并接收流式响应 =====
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-    setThinkingContent('');
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      await handleStreamResponse(response);
-    } catch (error) {
-      console.error('Error:', error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: '抱歉，发生了错误。请稍后重试。',
-        completed: true 
-      }]);
-      setIsLoading(false);
-      setIsThinking(false);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
+export default function HomePage() {
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* ===== 知识点 17: 头部标题栏 ===== */}
-      <header className="bg-white shadow-sm p-4 border-b">
-        <h1 className="text-2xl font-bold text-gray-800">
-          流式对话 Demo - 豆包 AI
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          展示：打字效果 + 思考过程 + SSE 流式响应
-        </p>
-      </header>
-
-      {/* ===== 知识点 18: 消息展示区域 ===== */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 && (
-          <div className="text-center text-gray-400 mt-20">
-            <p className="text-xl mb-2">👋 开始对话吧！</p>
-            <p className="text-sm">输入消息，体验流式打字效果</p>
-          </div>
-        )}
-
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[70%] rounded-lg px-4 py-2 ${
-                msg.role === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white text-gray-800 shadow-sm border'
-              }`}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-12">
+        <header className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            前端面试 Demo 集合
+          </h1>
+          <p className="text-xl text-gray-600">
+            React + JavaScript + CSS + 浏览器原理 + AI 集成 高频面试题实现
+          </p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-sm flex-wrap">
+            <a 
+              href="/MINDMAP.md" 
+              target="_blank"
+              className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-700 hover:to-teal-700 transition font-medium shadow-lg"
             >
-              {/* ===== 知识点 19: 角色标识 ===== */}
-              <div className="text-xs opacity-70 mb-1">
-                {msg.role === 'user' ? '👤 You' : '🤖 AI'}
-              </div>
-              
-              {/* ===== 知识点 20: 打字效果的视觉呈现 ===== */}
-              <div className="whitespace-pre-wrap">
-                {msg.content}
-                {!msg.completed && (
-                  <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse" />
-                )}
-              </div>
-            </div>
+              🧠 前端思维体系全景图
+            </a>
+            <a 
+              href="/PRIORITY.md" 
+              target="_blank"
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium"
+            >
+              📋 学习优先级
+            </a>
+            <span className="text-gray-500">
+              共 15 大分类 · 70+ 个 Demo
+            </span>
           </div>
-        ))}
+        </header>
 
-        {/* ===== 知识点 21: 思考状态展示 ===== */}
-        {isThinking && thinkingContent && (
-          <div className="flex justify-start">
-            <div className="max-w-[70%] rounded-lg px-4 py-2 bg-yellow-50 text-gray-700 border border-yellow-200">
-              <div className="text-xs text-yellow-600 mb-1 flex items-center gap-1">
-                <span className="animate-spin">🧠</span>
-                <span>AI 正在思考...</span>
+        <div className="space-y-12">
+          {demos.map((section) => (
+            <section key={section.category} className="bg-white rounded-2xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-indigo-500 pb-2">
+                {section.category}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {section.items.map((demo) => (
+                  <Link
+                    key={demo.path}
+                    href={demo.path}
+                    className="group block p-6 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-indigo-500 hover:shadow-xl transition-all duration-300"
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                      {demo.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {demo.desc}
+                    </p>
+                    <div className="mt-4 text-indigo-500 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                      查看演示 →
+                    </div>
+                  </Link>
+                ))}
               </div>
-              <div className="text-sm whitespace-pre-wrap opacity-80">
-                {thinkingContent}
-                <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===== 知识点 22: 加载状态指示器 ===== */}
-        {isLoading && !isThinking && messages[messages.length - 1]?.role !== 'assistant' && (
-          <div className="flex justify-start">
-            <div className="bg-white rounded-lg px-4 py-2 shadow-sm border">
-              <div className="flex items-center gap-2 text-gray-500">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-                <span className="text-sm">正在连接...</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* ===== 知识点 23: 输入框区域 ===== */}
-      <div className="bg-white border-t p-4">
-        <div className="max-w-4xl mx-auto flex gap-2">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="输入消息... (Enter 发送，Shift+Enter 换行)"
-            disabled={isLoading}
-            className="flex-1 resize-none border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            rows={3}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={isLoading || !input.trim()}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
-          >
-            {isLoading ? '发送中...' : '发送'}
-          </button>
-        </div>
-        
-        {/* ===== 知识点 24: 状态提示 ===== */}
-        <div className="max-w-4xl mx-auto mt-2 text-xs text-gray-500 text-center">
-          {isLoading && '⚡ 正在实时接收流式响应...'}
+            </section>
+          ))}
         </div>
       </div>
     </div>

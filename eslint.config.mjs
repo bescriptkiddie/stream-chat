@@ -20,6 +20,14 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // 将常见的 demo 代码问题降级为警告
+      "react/no-unescaped-entities": "warn",
+      "react/jsx-no-comment-textnodes": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;
