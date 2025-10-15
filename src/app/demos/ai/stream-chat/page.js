@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import AIGuideLink from '@/components/AIGuideLink';
 
 export default function StreamChatDemo() {
   const [messages, setMessages] = useState([]);
@@ -250,7 +251,10 @@ export default function StreamChatDemo() {
 
       {/* 技术说明 */}
       <div className="bg-blue-50 border-t p-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-4">
+          {/* AI完整指南链接 */}
+          <AIGuideLink />
+          
           <details className="text-sm">
             <summary className="cursor-pointer font-semibold text-blue-900 mb-2">💡 技术要点</summary>
             <ul className="text-blue-800 space-y-1 ml-4">
