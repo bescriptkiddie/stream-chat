@@ -672,4 +672,28 @@ import(\`./locales/\${lang}.js\`); // 确保 ./locales 下所有文件都存在
 // ✅ 或使用预定义映射
 const locales = {
   'zh-CN': () => import('./locales/zh-CN.js'),
-  'en-US': () => import('./locales/en-US.
+  'en-US': () => import('./locales/en-US.js')
+};
+locales[lang]();`}
+              </pre>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-500">
+              <h4 className="font-semibold text-yellow-900 mb-2">❌ 陷阱 3：忘记配置 sideEffects</h4>
+              <pre className="bg-gray-900 text-gray-100 p-2 rounded text-xs">
+{`// package.json
+{
+  "name": "my-lib",
+  "sideEffects": false  // ✅ 启用 Tree Shaking
+}
+
+// ❌ 如果有副作用但标记为 false，可能导致代码被错误删除
+import './polyfill.js';  // 这个会被删除！`}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </DemoContainer>
+  );
+}

@@ -530,7 +530,7 @@ jobs:
           VITE_ENV: \${{ steps.env.outputs.ENV }}
       
       - name: Deploy
-        run: vercel deploy --prod=${{ steps.env.outputs.ENV == 'production' }}`}
+        run: vercel deploy --prod=\${{ steps.env.outputs.ENV == 'production' }}`}
               </pre>
             </details>
 
