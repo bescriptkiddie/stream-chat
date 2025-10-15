@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   output: 'export',  // 静态导出
   images: {
@@ -8,8 +10,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,  // 构建时忽略 ESLint 错误
   },
   // GitHub Pages 部署到 username.github.io/repo-name 需要配置 basePath
-  basePath: '/stream-chat',
-  assetPrefix: '/stream-chat',
+  // 开发环境不使用 basePath，生产环境使用
+  basePath: isProd ? '/stream-chat' : '',
+  assetPrefix: isProd ? '/stream-chat' : '',
 };
 
 export default nextConfig;
