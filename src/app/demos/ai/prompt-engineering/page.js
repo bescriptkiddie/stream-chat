@@ -67,12 +67,12 @@ export default function Demo() {
               </Link>
             </div>
             <div>
-              <Link href="/PRIORITY.md" className="hover:underline hover:text-indigo-600">
+              <Link href="/docs/PRIORITY" className="hover:underline hover:text-indigo-600">
                 查看完整的学习优先级规划
               </Link>
             </div>
             <div>
-              <Link href="/MINDMAP.md" className="hover:underline hover:text-indigo-600">
+              <Link href="/docs/MINDMAP" className="hover:underline hover:text-indigo-600">
                 查看前端知识体系思维导图
               </Link>
             </div>

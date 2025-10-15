@@ -333,7 +333,7 @@ function AIResponse({ content }) {
             <div className="bg-gradient-to-r from-indigo-100 to-purple-100 p-4 rounded-lg text-center">
               <p className="text-sm text-indigo-900 mb-2">想了解完整的 AI 前端开发体系？</p>
               <a 
-                href="/MINDMAP.md" 
+                href="/docs/MINDMAP" 
                 target="_blank"
                 className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
               >

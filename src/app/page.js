@@ -149,14 +149,14 @@ export default function HomePage() {
           </p>
           <div className="mt-4 flex items-center justify-center gap-4 text-sm flex-wrap">
             <a 
-              href="/MINDMAP.md" 
+              href="/docs/MINDMAP" 
               target="_blank"
               className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-lg hover:from-cyan-700 hover:to-teal-700 transition font-medium shadow-lg"
             >
               🧠 前端思维体系全景图
             </a>
             <a 
-              href="/PRIORITY.md" 
+              href="/docs/PRIORITY" 
               target="_blank"
               className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium"
             >
