@@ -1,0 +1,671 @@
+1:"$Sreact.fragment"
+2:I[9251,[],""]
+3:I[3663,[],""]
+5:I[8170,[],"OutletBoundary"]
+7:I[879,[],"AsyncMetadataOutlet"]
+9:I[8170,[],"ViewportBoundary"]
+b:I[8170,[],"MetadataBoundary"]
+c:"$Sreact.suspense"
+e:I[5721,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/7406ae0cf5ddb613.css","style"]
+0:{"P":null,"b":"GshP9q_n-1ECwcd1GKiM4","p":"","c":["","docs","PROJECT_SUMMARY"],"i":false,"f":[[["",{"children":["docs",{"children":[["slug","PROJECT_SUMMARY","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/7406ae0cf5ddb613.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":["docs",["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","PROJECT_SUMMARY","d"],["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L4",null,["$","$L5",null,{"children":["$L6",["$","$L7",null,{"promise":"$@8"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L9",null,{"children":"$La"}],["$","meta",null,{"name":"next-size-adjust","content":""}]],["$","$Lb",null,{"children":["$","div",null,{"hidden":true,"children":["$","$c",null,{"fallback":null,"children":"$Ld"}]}]}]]}],false]],"m":"$undefined","G":["$e",[]],"s":false,"S":true}
+f:I[7642,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],""]
+10:I[7014,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],"default"]
+11:T4b34,# 🎉 阶跃星辰 AI 前端面试 Demo 项目总结
+
+> 一个完整的、生产级的前端面试准备项目，专注于 AI 产品开发
+
+## 📊 项目概况
+
+- **项目名称**: Stream Chat - AI 前端面试 Demo
+- **完成时间**: 2024
+- **总功能数**: 25+ 个完整功能
+- **代码行数**: 10,000+ 行
+- **技术栈**: React 18 + Next.js + TypeScript + Tailwind CSS
+- **目标公司**: 阶跃星辰（Step AI）
+
+---
+
+## ✅ 完成情况统计
+
+### P0 级别（核心必备）：13/13 ✅ 100%
+
+| 分类 | 功能 | 状态 | 亮点 |
+|------|------|------|------|
+| **AI 集成** | SSE 流式对话 | ✅ | 实时打字效果、思考过程展示、Buffer 处理 |
+| **AI 集成** | 流式代码高亮 | ✅ | 增量解析、语法高亮、边界处理 |
+| **AI 集成** | 停止生成功能 | ✅ | AbortController、前后端配合 |
+| **AI 集成** | 多会话管理 | ✅ | IndexedDB 持久化、ChatGPT 式界面 |
+| **AI 集成** | 流式 Markdown | ✅ | 实时渲染、双栏对比、安全处理 |
+| **JS 基础** | 闭包演示 | ✅ | 3 个场景、知识体系定位 |
+| **JS 基础** | 事件循环 | ✅ | 宏任务/微任务可视化、逐步演示 |
+| **JS 基础** | Promise 原理 | ✅ | 手写完整实现、6 个测试用例 |
+| **JS 基础** | this 指向 | ✅ | 四种绑定规则、手写 call/apply/bind |
+| **TypeScript** | 泛型封装 API | ✅ | 完整 HTTP 封装、类型推断 |
+| **TypeScript** | 类型体操 | ✅ | 手写 Partial/Pick/Omit、6 个挑战 |
+| **性能优化** | 虚拟列表 | ✅ | 1 万条数据流畅滚动 |
+| **性能优化** | 对话历史优化 | ✅ | 虚拟滚动 + 分页 + LRU 缓存 |
+
+### P1 级别（加分项）：8/8 ✅ 100%
+
+| 分类 | 功能 | 状态 | 亮点 |
+|------|------|------|------|
+| **React 高级** | Error Boundary | ✅ | 3 种场景、错误上报、重试机制 |
+| **React 高级** | Suspense + lazy | ✅ | 路由懒加载、代码分割 |
+| **手写系列** | 手写深拷贝 | ✅ | 循环引用、8+ 类型支持 |
+| **手写系列** | 手写 EventEmitter | ✅ | 发布订阅、on/off/once/emit |
+| **AI 集成** | LaTeX 公式渲染 | ✅ | KaTeX 集成、Step 模型数学能力 |
+| **AI 集成** | Token 计数器 | ✅ | 实时计算、成本估算 |
+| **AI 集成** | Function Calling | ✅ | AI 调用本地函数 |
+| **CSS 基础** | 居中方案大全 | ✅ | 6 种方法、兼容性对比 |
+
+### 其他功能：4 个
+
+| 功能 | 状态 |
+|------|------|
+| useDebounce Hook | ✅ |
+| useThrottle Hook | ✅ |
+| 拖拽排序 | ✅ |
+| Demo 容器组件 | ✅ |
+
+**总计：25 个完整功能 ✅**
+
+---
+
+## 🛠️ 技术栈
+
+### 前端框架
+- **React 18** - 最新特性：Suspense、Error Boundary、Concurrent Mode
+- **Next.js 14** - App Router、SSR、API Routes
+- **TypeScript** - 类型安全、泛型、工具类型
+
+### 样式方案
+- **Tailwind CSS** - 原子化 CSS、响应式设计
+- **CSS-in-JS** - 动态样式
+
+### 数据存储
+- **IndexedDB** - 浏览器端数据库，支持大量数据
+- **LocalStorage** - 简单配置存储
+
+### AI 集成
+- **SSE (Server-Sent Events)** - 流式响应
+- **Markdown 解析** - 支持代码高亮
+- **LaTeX 渲染** - 数学公式展示
+- **Token 计数** - 成本控制
+
+### 开发工具
+- **ESLint** - 代码规范
+- **Git** - 版本控制
+
+---
+
+## 📁 项目目录结构
+
+```
+stream-chat/
+├── src/
+│   ├── app/
+│   │   ├── demos/
+│   │   │   ├── ai/                        # AI 前端集成
+│   │   │   │   ├── stream-chat/          # ✅ SSE 流式对话
+│   │   │   │   ├── code-highlight/       # ✅ 流式代码高亮
+│   │   │   │   ├── abort-generation/     # ✅ 停止生成
+│   │   │   │   ├── multi-session/        # ✅ 多会话管理
+│   │   │   │   ├── stream-markdown/      # ✅ 流式 Markdown
+│   │   │   │   ├── latex-render/         # ✅ LaTeX 渲染
+│   │   │   │   ├── token-counter/        # ✅ Token 计数器
+│   │   │   │   └── function-calling/     # ✅ Function Calling
+│   │   │   │
+│   │   │   ├── js-basic/                 # JavaScript 基础
+│   │   │   │   ├── closure/              # ✅ 闭包演示
+│   │   │   │   ├── event-loop/           # ✅ 事件循环
+│   │   │   │   ├── promise/              # ✅ Promise 原理
+│   │   │   │   └── this-binding/         # ✅ this 指向
+│   │   │   │
+│   │   │   ├── typescript/               # TypeScript
+│   │   │   │   ├── generic-api/          # ✅ 泛型封装 API
+│   │   │   │   └── type-challenges/      # ✅ 类型体操
+│   │   │   │
+│   │   │   ├── react-advanced/           # React 高级特性
+│   │   │   │   ├── error-boundary/       # ✅ Error Boundary
+│   │   │   │   └── suspense/             # ✅ Suspense + lazy
+│   │   │   │
+│   │   │   ├── handwrite/                # 手写系列
+│   │   │   │   ├── deep-clone/           # ✅ 手写深拷贝
+│   │   │   │   └── event-emitter/        # ✅ 手写 EventEmitter
+│   │   │   │
+│   │   │   ├── performance/              # 性能优化
+│   │   │   │   └── virtual-list/         # ✅ 虚拟列表
+│   │   │   │
+│   │   │   ├── css/                      # CSS 技巧
+│   │   │   │   └── center/               # ✅ 居中方案
+│   │   │   │
+│   │   │   ├── hooks/                    # React Hooks
+│   │   │   │   ├── use-debounce/         # ✅ useDebounce
+│   │   │   │   └── use-throttle/         # ✅ useThrottle
+│   │   │   │
+│   │   │   └── features/                 # 功能演示
+│   │   │       └── drag-sort/            # ✅ 拖拽排序
+│   │   │
+│   │   └── layout.js                     # 演示布局
+│   │
+│   └── components/
+│       └── DemoContainer.js              # 演示容器组件
+│
+├── public/                               # 静态资源
+├── package.json                          # 依赖配置
+├── PRIORITY.md                           # 优先级规划
+├── MINDMAP.md                            # 知识体系思维导图
+├── STREAMING_GUIDE.md                    # 流式技术指南
+└── PROJECT_SUMMARY.md                    # 项目总结（本文档）
+```
+
+---
+
+## 🎯 核心亮点
+
+### 1. 前端工程思维贯穿始终
+
+每个功能的实现都遵循完整的思维框架：
+
+```
+需求分析 → 技术选型 → 实现细节 → 边界处理 → 用户体验 → 工程质量 → 面试准备
+```
+
+#### 示例：SSE 流式对话
+
+- **需求分析**: AI 产品核心体验 - 实时打字效果
+- **技术选型**: SSE vs WebSocket vs 轮询（为什么选 SSE）
+- **实现细节**: ReadableStream、Buffer 处理、增量渲染
+- **边界处理**: 跨 chunk 边界、连接断开、错误恢复
+- **用户体验**: 加载状态、思考过程、自动滚动
+- **工程质量**: 类型定义、错误处理、代码复用
+- **面试准备**: 高频问题、追问应对、实际项目经验
+
+### 2. AI 产品专业度
+
+针对阶跃星辰 AI 产品特点：
+
+- ✅ **Step 模型特色**: LaTeX 数学公式渲染（数学推理能力）
+- ✅ **成本控制**: Token 计数器、实时成本估算
+- ✅ **功能扩展**: Function Calling（调用本地函数）
+- ✅ **用户体验**: 停止生成、多会话管理、流式渲染
+- ✅ **性能优化**: 虚拟滚动、LRU 缓存、分页加载
+
+### 3. 面试准备完整性
+
+每个功能都包含：
+
+- ✅ **核心概念**: 清晰的理论讲解
+- ✅ **实现代码**: 可运行的完整代码
+- ✅ **面试场景**: 3-5 个模拟面试问答
+- ✅ **高频 QA**: 常见追问及回答
+- ✅ **实际应用**: 在阶跃星辰产品中的应用
+- ✅ **可能追问**: 5+ 个追问场景及应对
+
+### 4. 代码质量专业
+
+- ✅ **可运行**: 所有代码都是完整实现，可直接运行
+- ✅ **有注释**: 关键逻辑都有清晰注释
+- ✅ **类型安全**: TypeScript 类型定义完整
+- ✅ **UI 精美**: Tailwind CSS 统一设计
+- ✅ **交互完善**: 按钮、状态、反馈都考虑周到
+
+### 5. 知识体系完整
+
+不是孤立的功能点，而是完整的知识网络：
+
+```
+前端核心能力
+├── JavaScript 基础
+│   ├── 闭包 → 事件循环 → Promise → this 指向
+│   └── 异步编程 → 状态管理 → 性能优化
+│
+├── React 生态
+│   ├── Hooks (useState/useEffect/custom) → Error Boundary
+│   └── Suspense → lazy → 代码分割
+│
+├── TypeScript
+│   ├── 泛型 → 类型体操 → 工具类型
+│   └── 类型推断 → 约束 → 实战应用
+│
+└── AI 产品能力
+    ├── 流式渲染 → 多会话 → 成本控制
+    └── LaTeX → Function Calling → Token 计数
+```
+
+---
+
+## 🚀 快速开始
+
+### 1. 安装依赖
+
+```bash
+cd stream-chat
+npm install
+# or
+pnpm install
+```
+
+### 2. 启动开发服务器
+
+```bash
+npm run dev
+```
+
+打开 [http://localhost:3000](http://localhost:3000)
+
+### 3. 浏览功能
+
+访问 `/demos` 路由，左侧导航栏可以切换不同的演示功能。
+
+---
+
+## 📚 使用指南
+
+### 面试前准备
+
+#### 1 周前：深度理解
+- 📖 阅读每个功能的"核心概念"部分
+- 💻 运行代码，理解实现细节
+- 🎤 背诵"面试场景模拟"的标准回答
+
+#### 3 天前：实战演练
+- 🗣️ 对着镜子讲解每个功能
+- ✍️ 手写核心代码（深拷贝、Promise、EventEmitter）
+- 🤔 思考"追问场景"的应对方式
+
+#### 面试当天：重点复习
+- ⚡ P0 级别 13 个功能快速过一遍
+- 🔥 重点：SSE 流式对话、多会话管理、Promise 原理、this 指向
+- 💡 准备 2-3 个实际项目应用的案例
+
+### 面试中展示
+
+#### 方案 1：直播演示（推荐）
+```bash
+# 启动项目
+npm run dev
+
+# 在面试中打开浏览器展示
+open http://localhost:3000/demos
+```
+
+**优势**: 
+- 实时运行，直观展示效果
+- 可以边讲边操作，互动性强
+- 展示代码质量和工程能力
+
+#### 方案 2：代码讲解
+- 打开 VSCode，展示项目结构
+- 选择 2-3 个核心功能深度讲解
+- 强调技术选型和实现难点
+
+#### 方案 3：录屏展示
+- 提前录制功能演示视频
+- 面试时播放并讲解
+- 准备代码应对追问
+
+### 面试话术模板
+
+**开场白:**
+```
+"我准备了一个完整的 Demo 项目，包含 25+ 个功能点，
+涵盖 AI 前端集成、JavaScript 基础、TypeScript、React 高级特性等。
+我可以选择几个核心功能给您演示一下吗？"
+```
+
+**功能介绍（以 SSE 流式对话为例）:**
+```
+"这个功能是 AI 产品的核心体验。我选择 SSE 而不是 WebSocket，
+因为单向推送就够了，而且 SSE 有自动重连机制。
+
+实现上的难点主要有三个：
+1. Buffer 处理 - 防止跨 chunk 边界导致数据不完整
+2. 增量渲染 - 只追加新内容，不重复渲染
+3. 思考过程展示 - 区分 thinking 和 content
+
+在阶跃星辰的产品中，这个功能可以应用到...
+（展示实际应用场景）"
+```
+
+**应对追问:**
+```
+面试官："如果网络中断怎么办？"
+
+回答："好问题！我考虑了三层处理：
+1. SSE 自动重连 - 浏览器原生支持
+2. 前端重试机制 - 指数退避算法
+3. 断点续传 - 记录最后接收的 message ID
+
+代码在这里...（展示具体实现）"
+```
+
+---
+
+## 🎓 学习收获
+
+### 技术能力提升
+
+#### 1. AI 产品开发能力
+- ✅ 流式响应处理（SSE、ReadableStream）
+- ✅ 多会话状态管理（IndexedDB）
+- ✅ 成本控制（Token 计数）
+- ✅ 功能扩展（Function Calling）
+- ✅ 数学公式渲染（LaTeX）
+
+#### 2. JavaScript 深度理解
+- ✅ 闭包原理与应用场景
+- ✅ 事件循环机制（宏任务/微任务）
+- ✅ Promise A+ 规范与手写实现
+- ✅ this 绑定规则与手写 call/apply/bind
+- ✅ 深拷贝实现（循环引用处理）
+
+#### 3. React 高级特性
+- ✅ Error Boundary 错误处理
+- ✅ Suspense + lazy 代码分割
+- ✅ Custom Hooks 封装
+- ✅ 性能优化（虚拟列表、React.memo）
+
+#### 4. TypeScript 实战
+- ✅ 泛型封装 API（类型推断）
+- ✅ 类型体操（Partial/Pick/Omit）
+- ✅ 工具类型实现
+- ✅ 类型安全的业务代码
+
+#### 5. 性能优化
+- ✅ 虚拟滚动（1 万条数据流畅渲染）
+- ✅ 分页加载（按需加载）
+- ✅ LRU 缓存（最近最少使用）
+- ✅ 节流防抖（高频事件优化）
+
+### 工程能力提升
+
+#### 1. 架构设计
+- ✅ 组件封装与复用
+- ✅ 状态管理方案
+- ✅ 错误处理机制
+- ✅ 数据持久化策略
+
+#### 2. 代码质量
+- ✅ TypeScript 类型安全
+- ✅ 代码规范与注释
+- ✅ 边界情况处理
+- ✅ 用户体验优化
+
+#### 3. 问题解决
+- ✅ 技术选型能力
+- ✅ 性能问题定位
+- ✅ 算法实现能力
+- ✅ 调试技巧
+
+### 面试能力提升
+
+#### 1. 表达能力
+- ✅ 清晰的技术讲解
+- ✅ 结构化的回答
+- ✅ 实际案例支撑
+- ✅ 深度与广度平衡
+
+#### 2. 应变能力
+- ✅ 追问应对策略
+- ✅ 技术对比分析
+- ✅ 优缺点权衡
+- ✅ 实际应用场景
+
+#### 3. 专业度
+- ✅ 对 AI 产品的理解
+- ✅ 对阶跃星辰的了解
+- ✅ 技术趋势的把握
+- ✅ 工程思维的体现
+
+---
+
+## 💼 面试策略建议
+
+### 针对阶跃星辰的准备
+
+#### 1. 强调 AI 产品理解
+```
+"我特别关注了阶跃星辰的 Step 系列模型，特别是 Step-1 的
+长推理能力。所以在 Demo 中实现了 LaTeX 数学公式渲染，
+展示模型的数学推理能力..."
+```
+
+#### 2. 展示成本意识
+```
+"AI 产品的成本控制很重要，所以我实现了 Token 计数器，
+可以实时估算 API 调用成本，帮助用户控制花费..."
+```
+
+#### 3. 突出用户体验
+```
+"流式渲染不仅仅是技术实现，更重要的是用户体验。
+我加入了思考过程展示、停止生成按钮、多会话管理等，
+都是为了提升用户体验..."
+```
+
+#### 4. 体现工程能力
+```
+"在实现过程中，我不仅考虑了功能实现，还考虑了：
+- 错误处理（Error Boundary）
+- 性能优化（虚拟滚动、LRU 缓存）
+- 类型安全（TypeScript）
+- 用户体验（加载状态、错误提示）"
+```
+
+### 面试流程建议
+
+#### 1. 开场（5 分钟）
+- 简要介绍项目背景
+- 展示整体目录结构
+- 说明技术栈选择
+
+#### 2. 核心功能演示（20 分钟）
+选择 3-5 个核心功能深度讲解：
+
+**必选（体现 AI 理解）:**
+- SSE 流式对话
+- 多会话管理
+- Token 计数器
+
+**必选（体现技术深度）:**
+- Promise 原理（手写实现）
+- this 指向（四种绑定规则）
+
+**可选（看面试官兴趣）:**
+- 类型体操（TypeScript 深度）
+- 虚拟列表（性能优化）
+- Error Boundary（工程能力）
+
+#### 3. 技术深挖（15 分钟）
+根据面试官追问，深入讲解：
+- 实现细节
+- 技术选型理由
+- 遇到的困难
+- 优化策略
+
+#### 4. 实际应用（10 分钟）
+结合阶跃星辰产品，讲解如何应用：
+- 在 Step Chat 中的应用
+- 在企业客户产品中的应用
+- 性能优化方案
+- 成本控制策略
+
+---
+
+## 🏆 项目价值
+
+### 对求职的价值
+
+#### 1. 简历加分
+```markdown
+## 项目经历
+
+### AI 聊天应用（个人项目）
+技术栈: React 18 + Next.js + TypeScript + IndexedDB
+
+核心功能:
+- 实现 SSE 流式对话，支持实时打字效果和思考过程展示
+- 使用 IndexedDB 实现多会话持久化，支持离线访问
+- 实现虚拟滚动优化，支持 1 万条消息流畅渲染
+- 集成 Token 计数器，实时计算 API 调用成本
+
+技术亮点:
+- 手写 Promise 实现，深入理解异步编程原理
+- 实现深拷贝算法，处理循环引用和特殊类型
+- TypeScript 泛型封装 HTTP 请求，类型安全
+- 使用 Error Boundary 和 Suspense 提升用户体验
+
+GitHub: [链接]
+```
+
+#### 2. 面试展示
+- 直接运行演示，效果直观
+- 代码质量高，体现工程能力
+- 功能完整，展示全栈思维
+- 针对性强，匹配公司需求
+
+#### 3. 技术深度
+- 不是简单的 CRUD
+- 有技术难点和解决方案
+- 有性能优化和最佳实践
+- 有工程化思考
+
+### 对学习的价值
+
+#### 1. 系统性
+- 不是零散的知识点
+- 有完整的知识体系
+- 前后关联，循序渐进
+
+#### 2. 实战性
+- 所有代码可运行
+- 贴近实际项目
+- 有最佳实践指导
+
+#### 3. 可扩展性
+- 代码结构清晰
+- 容易添加新功能
+- 可作为未来项目基础
+
+---
+
+## 📈 后续优化方向
+
+### 功能扩展
+
+#### P2 级别（进阶内容）
+- [ ] 原型链演示
+- [ ] Context + Reducer 状态管理
+- [ ] 跨域解决方案
+- [ ] WebSocket 实现
+- [ ] 经典布局（Flex/Grid）
+
+#### P3 级别（工程化）
+- [ ] 单元测试（Jest + React Testing Library）
+- [ ] E2E 测试（Playwright）
+- [ ] CI/CD 流程（GitHub Actions）
+- [ ] 性能监控（Web Vitals）
+- [ ] 错误监控（Sentry）
+
+### 技术优化
+
+#### 性能优化
+- [ ] React Server Components
+- [ ] Streaming SSR
+- [ ] 增量静态生成（ISR）
+- [ ] 图片优化（Next.js Image）
+
+#### 用户体验
+- [ ] PWA 支持（离线可用）
+- [ ] 暗黑模式
+- [ ] 国际化（i18n）
+- [ ] 无障碍（a11y）
+
+#### 工程化
+- [ ] Monorepo（Turborepo）
+- [ ] 组件库抽离
+- [ ] Storybook 文档
+- [ ] 性能基准测试
+
+---
+
+## 🤝 贡献指南
+
+这是一个学习项目，欢迎提出改进建议：
+
+1. **功能建议**: 提 Issue 说明需求
+2. **Bug 修复**: 提 PR 附上描述
+3. **文档完善**: 欢迎补充说明
+4. **经验分享**: 讨论区分享面试经验
+
+---
+
+## 📞 联系方式
+
+如果这个项目对你有帮助，欢迎：
+
+- ⭐ Star 本项目
+- 🔀 Fork 并自定义
+- 💬 提出改进建议
+- 📧 分享面试经验
+
+---
+
+## 🙏 致谢
+
+### 技术参考
+- **React 官方文档**: https://react.dev
+- **Next.js 官方文档**: https://nextjs.org
+- **TypeScript 官方文档**: https://www.typescriptlang.org
+- **阶跃星辰 API 文档**: https://platform.stepfun.com
+
+### 灵感来源
+- **阶跃星辰**: AI 产品理念
+- **ChatGPT**: 流式交互体验
+- **Claude**: 多会话管理
+- **各路面试题**: 技术点覆盖
+
+---
+
+## 📄 License
+
+MIT License - 可自由使用、修改、分发
+
+---
+
+## 🎯 最后的话
+
+这个项目不仅仅是为了面试，更重要的是：
+
+1. **建立知识体系**: 从零散到系统，从表面到深入
+2. **培养工程思维**: 需求分析 → 技术选型 → 实现 → 优化
+3. **提升解决问题能力**: 遇到问题 → 分析原因 → 找到方案
+4. **理解 AI 产品**: 不只是前端，更是产品思维
+
+**记住**：
+- 💡 理解原理 > 记住 API
+- 🎯 解决问题 > 堆砌技术
+- 🚀 持续学习 > 完成项目
+- 🤝 团队协作 > 个人英雄
+
+**祝你面试顺利！拿到 Offer！🎉**
+
+---
+
+<div align="center">
+
+**Made with ❤️ for 阶跃星辰面试准备**
+
+[⬆ 回到顶部](#-阶跃星辰-ai-前端面试-demo-项目总结)
+
+</div>
+4:["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","div",null,{"className":"bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm","children":["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-4 flex items-center justify-between","children":[["$","$Lf",null,{"href":"/","className":"text-blue-600 hover:text-blue-800 font-semibold","children":"← 返回首页"}],["$","h1",null,{"className":"text-xl font-bold text-gray-800","children":"🎉 阶跃星辰 AI 前端面试 Demo 项目总结"}],["$","div",null,{"className":"w-24"}]," "]}]}],["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-8","children":["$","div",null,{"className":"bg-white rounded-lg shadow-lg p-8","children":["$","$L10",null,{"content":"$11"}]}]}]]}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:null
+12:I[5583,[],"IconMark"]
+8:{"metadata":[["$","title","0",{"children":"Create Next App"}],["$","meta","1",{"name":"description","content":"Generated by create next app"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L12","3",{}]],"error":null,"digest":"$undefined"}
+d:"$8:metadata"

@@ -1,0 +1,135 @@
+1:"$Sreact.fragment"
+2:I[9251,[],""]
+3:I[3663,[],""]
+5:I[8170,[],"OutletBoundary"]
+7:I[879,[],"AsyncMetadataOutlet"]
+9:I[8170,[],"ViewportBoundary"]
+b:I[8170,[],"MetadataBoundary"]
+c:"$Sreact.suspense"
+e:I[5721,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/7406ae0cf5ddb613.css","style"]
+0:{"P":null,"b":"GshP9q_n-1ECwcd1GKiM4","p":"","c":["","docs","INTERVIEW_GUIDE"],"i":false,"f":[[["",{"children":["docs",{"children":[["slug","INTERVIEW_GUIDE","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/7406ae0cf5ddb613.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":["docs",["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","INTERVIEW_GUIDE","d"],["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L4",null,["$","$L5",null,{"children":["$L6",["$","$L7",null,{"promise":"$@8"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L9",null,{"children":"$La"}],["$","meta",null,{"name":"next-size-adjust","content":""}]],["$","$Lb",null,{"children":["$","div",null,{"hidden":true,"children":["$","$c",null,{"fallback":null,"children":"$Ld"}]}]}]]}],false]],"m":"$undefined","G":["$e",[]],"s":false,"S":true}
+f:I[7642,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],""]
+10:I[7014,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],"default"]
+11:Tee3,# 🎤 面试准备完整指南
+
+> 基于 25+ 个实战功能的系统化面试准备方案
+
+## 📋 目录
+
+- [面试时间线规划](#面试时间线规划)
+- [核心功能速查表](#核心功能速查表)
+- [高频问题汇总](#高频问题汇总)
+- [标准回答模板](#标准回答模板)
+- [追问应对策略](#追问应对策略)
+- [实战模拟演练](#实战模拟演练)
+
+---
+
+## 面试时间线规划
+
+### 📅 1 个月准备计划
+
+#### 第 1 周：P0 核心功能（AI 集成）
+**目标**: 深入理解 AI 产品开发
+
+| 天 | 学习内容 | 时间分配 |
+|----|---------|----------|
+| Day 1-2 | SSE 流式对话 + 停止生成 | 4h/天 |
+| Day 3-4 | 多会话管理 (IndexedDB) | 4h/天 |
+| Day 5 | 流式 Markdown + 代码高亮 | 4h |
+| Day 6-7 | 复习 + 手写代码 + 面试问答 | 3h/天 |
+
+**检查点**:
+- ✅ 能讲清楚 SSE 和 WebSocket 的区别
+- ✅ 能手写 Buffer 处理逻辑
+- ✅ 能解释 IndexedDB 的事务机制
+- ✅ 能应对 5+ 个追问
+
+#### 第 2 周：P0 核心功能（JS 基础）
+**目标**: 夯实 JavaScript 基础
+
+| 天 | 学习内容 | 时间分配 |
+|----|---------|----------|
+| Day 8-9 | 闭包 + this 指向 | 4h/天 |
+| Day 10-11 | 事件循环 + Promise 原理 | 4h/天 |
+| Day 12 | 手写 call/apply/bind | 4h |
+| Day 13-14 | 手写 Promise + 复习 | 3h/天 |
+
+**检查点**:
+- ✅ 能画出事件循环流程图
+- ✅ 能手写 Promise A+ 规范实现
+- ✅ 能讲清楚 this 的 4 种绑定规则
+- ✅ 能解释闭包的应用场景
+
+#### 第 3 周：P0 + P1 高级特性
+**目标**: 提升技术深度
+
+| 天 | 学习内容 | 时间分配 |
+|----|---------|----------|
+| Day 15-16 | TypeScript 泛型 + 类型体操 | 4h/天 |
+| Day 17-18 | 虚拟列表 + LRU 缓存 | 4h/天 |
+| Day 19-20 | Error Boundary + Suspense | 3h/天 |
+| Day 21 | 手写深拷贝 + EventEmitter | 4h |
+
+**检查点**:
+- ✅ 能手写 Partial/Pick/Omit
+- ✅ 能解释虚拟滚动原理
+- ✅ 能讲清楚 Error Boundary 的局限性
+- ✅ 能实现循环引用处理
+
+#### 第 4 周：综合复习 + 模拟面试
+**目标**: 整体提升，实战演练
+
+| 天 | 学习内容 | 时间分配 |
+|----|---------|----------|
+| Day 22-23 | P1 加分项快速过一遍 | 3h/天 |
+| Day 24-25 | 模拟面试（录视频） | 2h/天 |
+| Day 26-27 | 追问场景演练 | 2h/天 |
+| Day 28 | 项目整体演示 + 话术准备 | 3h |
+
+**检查点**:
+- ✅ 能在 45 分钟内讲完 5 个核心功能
+- ✅ 能流畅应对 20+ 个追问
+- ✅ 能结合阶跃星辰产品讲应用
+- ✅ 能展示完整的工程思维
+
+---
+
+### ⚡ 2 周速成计划
+
+#### 第 1 周：P0 核心功能突击
+
+| 天 | 上午 (3h) | 下午 (3h) | 晚上 (2h) |
+|----|-----------|-----------|-----------|
+| Day 1 | SSE 流式对话原理 | 手写 Buffer 处理 | 面试问答 |
+| Day 2 | 多会话管理 (IndexedDB) | 实现代码演练 | 追问应对 |
+| Day 3 | Promise 原理 | 手写 Promise | A+ 规范细节 |
+| Day 4 | this 指向 4 规则 | 手写 call/apply/bind | 实战案例 |
+| Day 5 | 事件循环机制 | 宏任务/微任务题目 | 高频考点 |
+| Day 6 | 泛型 API + 类型体操 | TypeScript 实战 | 工具类型 |
+| Day 7 | 虚拟列表 + 性能优化 | 综合复习 | 模拟面试 |
+
+#### 第 2 周：P1 加分项 + 实战演练
+
+| 天 | 上午 (2h) | 下午 (2h) | 晚上 (2h) |
+|----|-----------|-----------|-----------|
+| Day 8 | Error Boundary | 手写深拷贝 | EventEmitter |
+| Day 9 | LaTeX + Token 计数 | Function Calling | CSS 居中 |
+| Day 10 | 全部功能快速过 | 重点功能深入 | 话术准备 |
+| Day 11 | 模拟面试 1 | 录制视频 | 总结改进 |
+| Day 12 | 模拟面试 2 | 追问演练 | 优化表达 |
+| Day 13 | 阶跃星辰产品研究 | 应用场景准备 | 最终复习 |
+| Day 14 | 轻度复习 | 心态调整 | 早休息 |
+
+---
+
+### 
+4:["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","div",null,{"className":"bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm","children":["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-4 flex items-center justify-between","children":[["$","$Lf",null,{"href":"/","className":"text-blue-600 hover:text-blue-800 font-semibold","children":"← 返回首页"}],["$","h1",null,{"className":"text-xl font-bold text-gray-800","children":"🎤 面试准备完整指南"}],["$","div",null,{"className":"w-24"}]," "]}]}],["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-8","children":["$","div",null,{"className":"bg-white rounded-lg shadow-lg p-8","children":["$","$L10",null,{"content":"$11"}]}]}]]}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:null
+12:I[5583,[],"IconMark"]
+8:{"metadata":[["$","title","0",{"children":"Create Next App"}],["$","meta","1",{"name":"description","content":"Generated by create next app"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L12","3",{}]],"error":null,"digest":"$undefined"}
+d:"$8:metadata"

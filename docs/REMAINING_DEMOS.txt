@@ -1,0 +1,79 @@
+1:"$Sreact.fragment"
+2:I[9251,[],""]
+3:I[3663,[],""]
+5:I[8170,[],"OutletBoundary"]
+7:I[879,[],"AsyncMetadataOutlet"]
+9:I[8170,[],"ViewportBoundary"]
+b:I[8170,[],"MetadataBoundary"]
+c:"$Sreact.suspense"
+e:I[5721,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/7406ae0cf5ddb613.css","style"]
+0:{"P":null,"b":"GshP9q_n-1ECwcd1GKiM4","p":"","c":["","docs","REMAINING_DEMOS"],"i":false,"f":[[["",{"children":["docs",{"children":[["slug","REMAINING_DEMOS","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/7406ae0cf5ddb613.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":["docs",["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","REMAINING_DEMOS","d"],["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L4",null,["$","$L5",null,{"children":["$L6",["$","$L7",null,{"promise":"$@8"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L9",null,{"children":"$La"}],["$","meta",null,{"name":"next-size-adjust","content":""}]],["$","$Lb",null,{"children":["$","div",null,{"hidden":true,"children":["$","$c",null,{"fallback":null,"children":"$Ld"}]}]}]]}],false]],"m":"$undefined","G":["$e",[]],"s":false,"S":true}
+f:I[7642,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],""]
+10:I[7014,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],"default"]
+11:T581,# 🎯 剩余 Demo 清单 - 17/27
+
+## ✅ 已完成（10 个）
+1. ✅ js-basic/closure
+2. ✅ js-basic/event-loop
+3. ✅ js-basic/promise
+4. ✅ js-basic/this-binding
+5. ✅ ai/code-highlight
+6. ✅ ai/multi-session
+7. ✅ ai/stream-markdown
+8. ✅ ai/abort-generation
+9. ✅ typescript/generic-api
+10. ✅ performance/virtual-list
+
+---
+
+## 📋 待完成（17 个）
+
+### AI 类（5 个）
+1. ⬜ ai/chat-history - 聊天历史
+2. ⬜ ai/function-calling - 函数调用
+3. ⬜ ai/latex-render - LaTeX 渲染
+4. ⬜ ai/stream-chat - 流式聊天
+5. ⬜ ai/token-counter - Token 计数
+
+### Browser 类（1 个）
+6. ⬜ browser/storage-cache - 存储缓存
+
+### CSS 类（1 个）
+7. ⬜ css/center - 居中布局
+
+### Features 类（1 个）
+8. ⬜ features/drag-sort - 拖拽排序
+
+### Handwrite 类（2 个）
+9. ⬜ handwrite/deep-clone - 深拷贝
+10. ⬜ handwrite/event-emitter - 事件发射器
+
+### Hooks 类（2 个）
+11. ⬜ hooks/use-debounce - 防抖 Hook
+12. ⬜ hooks/use-throttle - 节流 Hook
+
+### React Advanced 类（2 个）
+13. ⬜ react-advanced/error-boundary - 错误边界
+14. ⬜ react-advanced/suspense - Suspense
+
+### Security 类（1 个）
+15. ⬜ security/xss-defense - XSS 防御
+
+### TypeScript 类（1 个）
+16. ⬜ typescript/type-challenges - 类型挑战
+
+---
+
+## 📈 进度统计
+- 已完成：10/27 (37%)
+- 待完成：17/27 (63%)
+- 目标：100% 完成所有 demo
+4:["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","div",null,{"className":"bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm","children":["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-4 flex items-center justify-between","children":[["$","$Lf",null,{"href":"/","className":"text-blue-600 hover:text-blue-800 font-semibold","children":"← 返回首页"}],["$","h1",null,{"className":"text-xl font-bold text-gray-800","children":"🎯 剩余 Demo 清单 - 17/27"}],["$","div",null,{"className":"w-24"}]," "]}]}],["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-8","children":["$","div",null,{"className":"bg-white rounded-lg shadow-lg p-8","children":["$","$L10",null,{"content":"$11"}]}]}]]}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:null
+12:I[5583,[],"IconMark"]
+8:{"metadata":[["$","title","0",{"children":"Create Next App"}],["$","meta","1",{"name":"description","content":"Generated by create next app"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L12","3",{}]],"error":null,"digest":"$undefined"}
+d:"$8:metadata"

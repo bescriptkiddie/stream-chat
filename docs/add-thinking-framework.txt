@@ -1,0 +1,80 @@
+1:"$Sreact.fragment"
+2:I[9251,[],""]
+3:I[3663,[],""]
+5:I[8170,[],"OutletBoundary"]
+7:I[879,[],"AsyncMetadataOutlet"]
+9:I[8170,[],"ViewportBoundary"]
+b:I[8170,[],"MetadataBoundary"]
+c:"$Sreact.suspense"
+e:I[5721,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/7406ae0cf5ddb613.css","style"]
+0:{"P":null,"b":"GshP9q_n-1ECwcd1GKiM4","p":"","c":["","docs","add-thinking-framework"],"i":false,"f":[[["",{"children":["docs",{"children":[["slug","add-thinking-framework","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/7406ae0cf5ddb613.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],{"children":["docs",["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","add-thinking-framework","d"],["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L4",null,["$","$L5",null,{"children":["$L6",["$","$L7",null,{"promise":"$@8"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L9",null,{"children":"$La"}],["$","meta",null,{"name":"next-size-adjust","content":""}]],["$","$Lb",null,{"children":["$","div",null,{"hidden":true,"children":["$","$c",null,{"fallback":null,"children":"$Ld"}]}]}]]}],false]],"m":"$undefined","G":["$e",[]],"s":false,"S":true}
+f:I[7642,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],""]
+10:I[7014,["7642","static/chunks/7642-eedec7de89ba12af.js","1650","static/chunks/1650-e2c88a5d3fe7ba51.js","3508","static/chunks/app/docs/%5Bslug%5D/page-143891e3a2e88e9d.js"],"default"]
+11:T994,# 批量添加思维体系定位 - 执行计划
+
+## 已完成 ✅
+1. ✅ closure（已有）
+2. ✅ event-loop
+3. ✅ promise
+4. ✅ this-binding
+
+## 待完成（剩余 6 个）
+
+### AI 应用类（4个）- 使用 indigo 色系
+需要添加的关键信息：
+- **位置**：第四层：应用场景 → AI 产品开发 → [具体功能]
+- **前置知识**：HTTP/SSE、Promise/async、React Hooks、事件流
+- **横向关联**：WebSocket、状态管理、错误处理、性能优化
+- **后续应用**：AI 聊天产品、实时协作、数据流应用
+- **面试重要性**：⭐⭐⭐⭐（AI 公司必考）
+
+1. **code-highlight** - 代码高亮
+   - 技术难度：70%（语法解析、增量渲染）
+   - 业务复杂度：60%（多语言支持、主题切换）
+   
+2. **abort-generation** - 停止生成
+   - 技术难度：65%（AbortController、流中断）
+   - 业务复杂度：50%（状态管理、用户体验）
+   
+3. **multi-session** - 多会话管理
+   - 技术难度：75%（IndexedDB、事务处理）
+   - 业务复杂度：70%（数据同步、会话切换）
+   
+4. **stream-markdown** - 流式 Markdown
+   - 技术难度：80%（增量解析、边界处理）
+   - 业务复杂度：65%（实时渲染、布局稳定）
+
+### TypeScript 类（1个）- 使用 blue 色系
+5. **generic-api** - 泛型 API
+   - **位置**：第二层：语言核心 → TypeScript → 泛型系统
+   - **前置知识**：TypeScript 基础、类型系统、接口与类型
+   - **横向关联**：类型推断、条件类型、映射类型
+   - **后续应用**：类型安全的 API、组件库开发、大型项目
+   - **面试重要性**：⭐⭐⭐⭐（中高级必备）
+   - 深度：85%、广度：80%
+
+### 性能优化类（1个）- 使用 orange 色系
+6. **virtual-list** - 虚拟列表
+   - **位置**：第四层：应用场景 → 性能优化 → 长列表优化
+   - **前置知识**：React 渲染、浏览器渲染、滚动事件、内存管理
+   - **横向关联**：懒加载、分页、IntersectionObserver
+   - **后续应用**：长列表、大数据展示、移动端优化
+   - **面试重要性**：⭐⭐⭐⭐（性能优化专题）
+   - 深度：75%、广度：70%
+
+## 下一步
+由于已完成 JS 基础类的 3 个，现在需要用户确认是否继续完成剩余 6 个。
+
+如果确认，我会：
+1. 先完成 1-2 个示例给用户看效果
+2. 用户满意后批量完成剩余的
+3. 最后验证构建
+4:["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","div",null,{"className":"bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm","children":["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-4 flex items-center justify-between","children":[["$","$Lf",null,{"href":"/","className":"text-blue-600 hover:text-blue-800 font-semibold","children":"← 返回首页"}],["$","h1",null,{"className":"text-xl font-bold text-gray-800","children":"批量添加思维体系定位 - 执行计划"}],["$","div",null,{"className":"w-24"}]," "]}]}],["$","div",null,{"className":"max-w-5xl mx-auto px-6 py-8","children":["$","div",null,{"className":"bg-white rounded-lg shadow-lg p-8","children":["$","$L10",null,{"content":"$11"}]}]}]]}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:null
+12:I[5583,[],"IconMark"]
+8:{"metadata":[["$","title","0",{"children":"Create Next App"}],["$","meta","1",{"name":"description","content":"Generated by create next app"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L12","3",{}]],"error":null,"digest":"$undefined"}
+d:"$8:metadata"
