@@ -7,9 +7,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,  // 构建时忽略 ESLint 错误
   },
-  // 如果部署到 username.github.io/repo-name，取消下面两行注释
-  // basePath: '/stream-chat',
-  // assetPrefix: '/stream-chat',
+  // GitHub Pages 部署到 username.github.io/repo-name 需要配置 basePath
+  basePath: '/stream-chat',
+  assetPrefix: '/stream-chat',
 };
 
 export default nextConfig;
